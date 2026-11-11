@@ -1,9 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 ---
 <Base title="About">
   <h1 class="text-xl font-bold mb-4">About</h1>
   <p>This is an unofficial community project. Not affiliated with or endorsed by AWS. AWS documentation and AWS Artifact are authoritative.</p>
   <p class="mt-2">Method: detect, draft, review, publish. Every cell has a URL, a short quote, and a retrieval date.</p>
-  <p class="mt-2">Evaluation results: see eval/results.md.</p>
+  <p class="mt-2">Evaluation results: <a class="underline" href={`${base}evaluation`}>see the evaluation page</a>.</p>
 </Base>

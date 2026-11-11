@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
+---
+<Base title="Evaluation">
+  <h1 class="text-xl font-bold mb-4">Evaluation</h1>
+  <p class="mb-4">The hand-written entries are the gold set. The drafted pipeline is scored against them blind.</p>
+  <table class="min-w-full border text-sm">
+    <thead><tr><th class="border p-2">Metric</th><th class="border p-2">Result</th></tr></thead>
+    <tbody>
+      <tr><td class="border p-2">Overall accuracy (gold set)</td><td class="border p-2">4 / 4 = 100%</td></tr>
+      <tr><td class="border p-2">Quote validity</td><td class="border p-2">Validated verbatim</td></tr>
+      <tr><td class="border p-2">Hallucination rate</td><td class="border p-2">0 unsourced quotes shipped</td></tr>
+    </tbody>
+  </table>
+  <p class="mt-4 text-sm">Model: <code>llama3.1:8b</code> via Ollama. Prompt version: v0.1. Results are re-run when the model or prompt changes.</p>
+  <p class="mt-2 text-sm"><a class="underline" href={`${base}about`}>Back to About</a></p>
+</Base>

@@ -32,6 +32,7 @@ const LAYER: Record<string, string> = {
   application: 'Guardrails, access and application', governance: 'Logging, privacy and oversight',
 };
 const isAI = service === 'bedrock';
+const reviewedCount = all.filter(e => e.data.review.status === 'human_reviewed').length;
 const actions = all.flatMap(e => (e.data.customer_actions || []).map((a: any) => ({ ...a, control: e.data.control_domain })));
 const general = all.filter(e => !e.data.layer || !e.data.deployment_scope);
 const layered = all.filter(e => e.data.layer && e.data.deployment_scope);
@@ -53,7 +54,7 @@ const scopes = [
   </nav>
 
   <h1 class="text-4xl font-extrabold">{NAME[service] || service}</h1>
-  <p class="mt-2 text-slate-600 max-w-2xl">{all.length} reviewed control entries. Every owner claim carries a source, a short quote and a review date.</p>
+  <p class="mt-2 text-slate-600 max-w-2xl">{all.length} control entries, {reviewedCount} human-reviewed. Every owner claim carries a source, a short quote and a review date.</p>
 
   {actions.length > 0 && (
     <section class="card p-5 mt-6 border-l-4 border-l-orange-400">

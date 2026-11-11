@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const entries = defineCollection({
-  loader: glob({ pattern: '**/*.yaml', base: '../../data/services' }),
+  loader: glob({ pattern: '**/*.yaml', base: '../data/services' }),
   schema: z.object({
     service: z.string(),
     control_domain: z.string(),

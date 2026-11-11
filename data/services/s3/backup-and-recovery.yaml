@@ -1,0 +1,22 @@
+service: s3
+control_domain: backup-and-recovery
+overall: shared
+responsibility:
+  aws: "Provides S3 Versioning, Replication, Object Lock and AWS Backup integration."
+  customer: "Configure versioning, replication, Object Lock and backup plans."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/data-protection.html
+    source_type: aws-doc
+    quote: "You can use live replication to enable automatic, asynchronous copying of objects across Amazon S3 buckets."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:s3-backup"
+frameworks:
+  nist_800_53: [CP-9, CP-10]
+  iso_27001_2022: [A.8.13]
+  soc2: [A1.2]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: medium
+  rationale: "AWS provides features; customer configures."

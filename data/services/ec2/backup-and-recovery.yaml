@@ -1,0 +1,22 @@
+service: ec2
+control_domain: backup-and-recovery
+overall: customer
+responsibility:
+  aws: null
+  customer: "Create and manage EBS snapshots and AMIs."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html
+    source_type: aws-doc
+    quote: "Security is a shared responsibility between AWS and you."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:ec2-backup"
+frameworks:
+  nist_800_53: [CP-9, CP-10]
+  iso_27001_2022: [A.8.13]
+  soc2: [A1.2]
+review:
+  status: draft
+  reviewed_on: "2026-11-05"
+  confidence: low
+  rationale: "Draft: verify against backup docs."

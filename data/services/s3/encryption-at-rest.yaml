@@ -1,0 +1,30 @@
+service: s3
+control_domain: encryption-at-rest
+overall: shared
+responsibility:
+  aws: "Encrypts new objects by default with SSE-S3 and manages the service-side keys."
+  customer: "Choose SSE-KMS/DSSE-KMS when key control is required; manage KMS key policies."
+  model_provider: null
+default_state:
+  enabled_by_default: true
+  since: "2023-01"
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingEncryption.html
+    source_type: aws-doc
+    quote: "Amazon S3 now applies server-side encryption with Amazon S3 managed keys (SSE-S3) as the base level of encryption for every bucket in Amazon S3."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:s3-enc-rest"
+frameworks:
+  nist_800_53: [SC-28]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.1]
+customer_actions:
+  - type: config_rule
+    id: s3-default-encryption-kms
+  - type: terraform
+    path: snippets/s3-kms.tf
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "Default is AWS-managed (SSE-S3); key control choice is customer-owned, so Shared."

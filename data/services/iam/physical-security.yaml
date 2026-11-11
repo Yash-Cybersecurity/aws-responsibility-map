@@ -1,0 +1,22 @@
+service: iam
+control_domain: physical-security
+overall: aws
+responsibility:
+  aws: "AWS protects the infrastructure running IAM."
+  customer: null
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+    source_type: aws-doc
+    quote: "IAM achieves high availability by replicating data across multiple servers within Amazon's data centers around the world."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:iam-physical"
+frameworks:
+  nist_800_53: [PE-1, PE-3]
+  iso_27001_2022: [A.7.1, A.7.2]
+  soc2: [CC6.4]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "AWS owns physical infrastructure."

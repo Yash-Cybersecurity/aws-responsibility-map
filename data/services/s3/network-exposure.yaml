@@ -1,0 +1,22 @@
+service: s3
+control_domain: network-exposure
+overall: shared
+responsibility:
+  aws: "Provides network isolation and VPC endpoints."
+  customer: "Configure bucket policies, public access blocks, and VPC endpoints."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/security.html
+    source_type: aws-doc
+    quote: "Managing access to your data using IAM roles and other service configurations to apply the appropriate permissions."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:s3-network"
+frameworks:
+  nist_800_53: [SC-7]
+  iso_27001_2022: [A.8.20, A.8.21]
+  soc2: [CC6.6]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: medium
+  rationale: "AWS provides controls; customer configures exposure."

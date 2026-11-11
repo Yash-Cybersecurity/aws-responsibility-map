@@ -1,0 +1,22 @@
+service: rds
+control_domain: encryption-at-rest
+overall: shared
+responsibility:
+  aws: "Provides Amazon RDS encryption using AES-256."
+  customer: "Enable encryption at DB instance creation; manage KMS keys."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html
+    source_type: aws-doc
+    quote: "Use Amazon RDS encryption to secure your DB instances and snapshots at rest."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:rds-enc-rest"
+frameworks:
+  nist_800_53: [SC-28]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "AWS provides encryption; customer enables and manages keys."

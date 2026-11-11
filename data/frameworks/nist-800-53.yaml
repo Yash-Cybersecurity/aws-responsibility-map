@@ -1,0 +1,17 @@
+# Reviewed mapping table: control domain -> NIST 800-53 controls
+mappings:
+  encryption-at-rest: [SC-28]
+  encryption-in-transit: [SC-8]
+  key-management: [SC-12]
+  identity-and-access: [AC-2, AC-3, AC-6]
+  network-exposure: [SC-7]
+  logging-and-monitoring: [AU-2, AU-3, AU-6]
+  patching: [SI-2]
+  backup-and-recovery: [CP-9, CP-10]
+  data-classification: [RA-2]
+  vulnerability-management: [RA-5, SI-2]
+  physical-security: [PE-1, PE-3]
+  incident-response: [IR-4, IR-6]
+  configuration-management: [CM-2, CM-6]
+  prompt-and-data-handling: [SC-28, AC-4]
+  guardrails-and-output-filtering: [SI-10, SI-11]

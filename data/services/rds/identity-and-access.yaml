@@ -1,0 +1,22 @@
+service: rds
+control_domain: identity-and-access
+overall: shared
+responsibility:
+  aws: "Provides IAM integration and database authentication."
+  customer: "Manage IAM policies, security groups, and DB user accounts."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html
+    source_type: aws-doc
+    quote: "Use AWS Identity and Access Management (IAM) policies to assign permissions that determine who is allowed to manage Amazon RDS resources."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:rds-iam"
+frameworks:
+  nist_800_53: [AC-2, AC-3, AC-6]
+  iso_27001_2022: [A.5.15, A.5.16, A.5.18]
+  soc2: [CC6.1, CC6.2, CC6.3]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "AWS provides auth mechanisms; customer manages access."

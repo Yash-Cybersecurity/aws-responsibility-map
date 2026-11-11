@@ -1,0 +1,23 @@
+# Deployment scopes for AI services, taken from AWS's Generative AI Security Scoping Matrix.
+# Confirm exact wording on AWS's page before publishing.
+scopes:
+  - id: genai-scope-1
+    name: "Scope 1 - Consumer app"
+    description: "A public AI feature used by end users; the vendor relies on a provider's application."
+    source_url: https://docs.aws.amazon.com/
+  - id: genai-scope-2
+    name: "Scope 2 - Enterprise app with AI features"
+    description: "A managed assistant or SaaS feature built on a hosted model."
+    source_url: https://docs.aws.amazon.com/
+  - id: genai-scope-3
+    name: "Scope 3 - Pre-trained model used as is"
+    description: "You call a hosted base model through an API with your prompts and RAG data."
+    source_url: https://docs.aws.amazon.com/
+  - id: genai-scope-4
+    name: "Scope 4 - Fine-tuned model"
+    description: "A custom or fine-tuned model on Bedrock or SageMaker."
+    source_url: https://docs.aws.amazon.com/
+  - id: genai-scope-5
+    name: "Scope 5 - Self-trained model"
+    description: "A model trained from scratch."
+    source_url: https://docs.aws.amazon.com/

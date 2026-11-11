@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+site/dist/
+site/.astro/
+site/public/data/index.json
+snapshots/manifest.json
+.DS_Store
+Thumbs.db

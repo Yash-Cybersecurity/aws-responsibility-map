@@ -1,0 +1,10 @@
+terms:
+  - term: SSE-S3
+    meaning: "Server-side encryption with Amazon S3 managed keys; the default encryption for every S3 bucket."
+    example: "All new S3 objects are encrypted with SSE-S3 unless you choose SSE-KMS."
+  - term: SSE-KMS
+    meaning: "Server-side encryption using AWS KMS keys, giving you control over key policy."
+    example: "Choose SSE-KMS when you need to manage key access."
+  - term: not_stated
+    meaning: "The documentation does not assign responsibility; we never guess."
+    example: "Marked not_stated when no source states an owner."

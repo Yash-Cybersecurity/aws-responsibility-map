@@ -1,0 +1,26 @@
+service: bedrock
+control_domain: prompt-and-data-handling
+deployment_scope: genai-scope-3
+sub_feature: base-model
+layer: data
+overall: customer
+responsibility:
+  aws: "Hosts infrastructure; does not access prompts per docs."
+  customer: "Own prompts, RAG data and knowledge bases."
+  model_provider: null
+contractual: false
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html
+    source_type: aws-doc
+    quote: "Model providers don't have any access to those accounts."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:bedrock-prompts"
+frameworks:
+  nist_800_53: [SC-28, AC-4]
+  iso_27001_2022: [A.8.10, A.8.11]
+  soc2: [CC6.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "Customer owns prompts/data; providers have no access per docs."

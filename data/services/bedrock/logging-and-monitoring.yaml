@@ -1,0 +1,25 @@
+service: bedrock
+control_domain: logging-and-monitoring
+deployment_scope: genai-scope-3
+sub_feature: base-model
+layer: governance
+overall: shared
+responsibility:
+  aws: "Provides CloudTrail logging of API activity."
+  customer: "Set up API and user activity logging with AWS CloudTrail."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html
+    source_type: aws-doc
+    quote: "Set up API and user activity logging with AWS CloudTrail."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:bedrock-logging"
+frameworks:
+  nist_800_53: [AU-2, AU-3, AU-6]
+  iso_27001_2022: [A.8.15, A.8.16]
+  soc2: [CC7.2, CC7.3]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "AWS provides logging; customer enables. Model providers have no access to logs per docs."

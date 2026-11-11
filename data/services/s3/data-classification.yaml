@@ -1,0 +1,22 @@
+service: s3
+control_domain: data-classification
+overall: customer
+responsibility:
+  aws: null
+  customer: "Classifying your assets."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/security.html
+    source_type: aws-doc
+    quote: "Classifying your assets."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:s3-classification"
+frameworks:
+  nist_800_53: [RA-2]
+  iso_27001_2022: [A.5.12, A.5.13]
+  soc2: [CC3.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "Customer owns data classification."

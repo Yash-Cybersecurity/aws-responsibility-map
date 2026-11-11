@@ -1,0 +1,18 @@
+service: ec2
+control_domain: encryption-at-rest
+overall: customer
+responsibility:
+  aws: null
+  customer: "Configuring EBS encryption and managing encryption keys for volumes."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html
+    source_type: aws-doc
+    quote: "Security is a shared responsibility between AWS and you."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:ec2-enc-rest"
+review:
+  status: draft
+  reviewed_on: "2026-11-05"
+  confidence: low
+  rationale: "Draft: verify against EBS encryption docs."

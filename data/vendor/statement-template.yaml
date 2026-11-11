@@ -1,0 +1,4 @@
+# Plain-sentence pattern per control. AWS and vendor columns only; customer column is filled by vendor.
+templates:
+  encryption-at-rest: "AWS is responsible for {aws}. We (the vendor) are responsible for {customer}. Our customers are responsible for {customer_customer}."
+  default: "AWS: {aws}. Vendor: {customer}. Customer: {customer_customer}."

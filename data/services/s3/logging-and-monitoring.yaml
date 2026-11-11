@@ -1,0 +1,22 @@
+service: s3
+control_domain: logging-and-monitoring
+overall: shared
+responsibility:
+  aws: "Provides CloudTrail and S3 access logging features."
+  customer: "Enable detective controls such as AWS CloudTrail or Amazon GuardDuty for Amazon S3."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/security.html
+    source_type: aws-doc
+    quote: "Enabling detective controls such as AWS CloudTrail or Amazon GuardDuty for Amazon S3."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:s3-logging"
+frameworks:
+  nist_800_53: [AU-2, AU-3, AU-6]
+  iso_27001_2022: [A.8.15, A.8.16]
+  soc2: [CC7.2, CC7.3]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "AWS provides logging; customer must enable."

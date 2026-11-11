@@ -1,0 +1,25 @@
+service: bedrock
+control_domain: guardrails-and-output-filtering
+deployment_scope: genai-scope-3
+sub_feature: guardrails
+layer: application
+overall: customer
+responsibility:
+  aws: "Provides the Guardrails feature."
+  customer: "Design, configure and test guardrail policies."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html
+    source_type: aws-doc
+    quote: "You are responsible for maintaining control over your content that is hosted on this infrastructure."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:bedrock-guardrails"
+frameworks:
+  nist_800_53: [SI-10, SI-11]
+  iso_27001_2022: [A.8.28]
+  soc2: [CC7.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: medium
+  rationale: "AWS provides feature; customer owns policy design."

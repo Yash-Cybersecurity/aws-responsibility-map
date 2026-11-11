@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["service", "control_domain", "overall", "responsibility", "sources", "review"],
+  "properties": {
+    "service": {"type": "string"},
+    "control_domain": {"type": "string"},
+    "deployment_scope": {"type": ["string", "null"]},
+    "agentic_scope": {"type": ["string", "null"]},
+    "sub_feature": {"type": ["string", "null"]},
+    "layer": {"type": ["string", "null"]},
+    "contractual": {"type": "boolean"},
+    "overall": {"enum": ["aws", "customer", "shared", "model_provider", "not_stated"]},
+    "responsibility": {
+      "type": "object",
+      "properties": {
+        "aws": {"type": ["string", "null"]},
+        "customer": {"type": ["string", "null"]},
+        "model_provider": {"type": ["string", "null"]}
+      }
+    },
+    "default_state": {
+      "type": "object",
+      "properties": {
+        "enabled_by_default": {"type": ["boolean", "null"]},
+        "since": {"type": ["string", "null"]}
+      }
+    },
+    "sources": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["url", "quote", "retrieved", "content_hash"],
+        "properties": {
+          "url": {"type": "string", "pattern": "^https://docs\\.aws\\.amazon\\.com/"},
+          "source_type": {"enum": ["aws-doc", "provider-terms", "aws-blog"]},
+          "quote": {"type": "string", "maxLength": 200},
+          "retrieved": {"type": "string"},
+          "content_hash": {"type": "string"}
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "required": ["status", "reviewed_on"],
+      "properties": {
+        "status": {"enum": ["draft", "human_reviewed", "stale"]},
+        "reviewed_on": {"type": "string"},
+        "confidence": {"enum": ["high", "medium", "low"]},
+        "rationale": {"type": "string"}
+      }
+    },
+    "frameworks": {"type": "object"},
+    "customer_actions": {"type": "array"}
+  }
+}

@@ -1,0 +1,13 @@
+# Gold-labeled entries for evaluation (subset)
+- service: s3
+  control_domain: encryption-at-rest
+  expected_overall: shared
+- service: ec2
+  control_domain: patching
+  expected_overall: customer
+- service: rds
+  control_domain: encryption-at-rest
+  expected_overall: shared
+- service: bedrock
+  control_domain: prompt-and-data-handling
+  expected_overall: customer

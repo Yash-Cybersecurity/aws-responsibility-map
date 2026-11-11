@@ -1,0 +1,22 @@
+service: rds
+control_domain: network-exposure
+overall: customer
+responsibility:
+  aws: null
+  customer: "Run DB instances in a VPC and control access with security groups."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html
+    source_type: aws-doc
+    quote: "Run your DB instance in a virtual private cloud (VPC) based on the Amazon VPC service for the greatest possible network access control."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:rds-network"
+frameworks:
+  nist_800_53: [SC-7]
+  iso_27001_2022: [A.8.20, A.8.21]
+  soc2: [CC6.6]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "Customer owns network placement."

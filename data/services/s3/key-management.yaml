@@ -1,0 +1,22 @@
+service: s3
+control_domain: key-management
+overall: shared
+responsibility:
+  aws: "Manages SSE-S3 keys; integrates with AWS KMS for SSE-KMS."
+  customer: "Manage KMS key policies and key lifecycle when using SSE-KMS."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingEncryption.html
+    source_type: aws-doc
+    quote: "If you want to set a different default encryption configuration in the destination bucket, you can use SSE-KMS or DSSE-KMS."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:s3-keys"
+frameworks:
+  nist_800_53: [SC-12]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "AWS manages service keys; customer manages KMS keys."

@@ -1,0 +1,25 @@
+service: s3
+control_domain: identity-and-access
+overall: shared
+responsibility:
+  aws: "Provides IAM integration and access management features."
+  customer: "Manage access to data using IAM roles and other service configurations to apply appropriate permissions."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/security.html
+    source_type: aws-doc
+    quote: "Managing access to your data using IAM roles and other service configurations to apply the appropriate permissions."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:s3-iam"
+frameworks:
+  nist_800_53: [AC-2, AC-3, AC-6]
+  iso_27001_2022: [A.5.15, A.5.16, A.5.18]
+  soc2: [CC6.1, CC6.2, CC6.3]
+customer_actions:
+  - type: config_rule
+    id: s3-bucket-public-read-prohibited
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "AWS provides mechanisms; customer configures permissions."

@@ -1,0 +1,10 @@
+questions:
+  - id: q-retention
+    text: "Who retains my data and for how long?"
+    tags: [bedrock, data-retention]
+  - id: q-guardrails
+    text: "Who configures guardrails and output filtering?"
+    tags: [bedrock, guardrails-and-output-filtering]
+  - id: q-logging
+    text: "Who can access logs of prompts and completions?"
+    tags: [bedrock, logging-and-monitoring]

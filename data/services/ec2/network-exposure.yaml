@@ -1,0 +1,22 @@
+service: ec2
+control_domain: network-exposure
+overall: customer
+responsibility:
+  aws: null
+  customer: "Controlling network access to your instances, for example, through configuring your VPC and security groups."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html
+    source_type: aws-doc
+    quote: "Controlling network access to your instances, for example, through configuring your VPC and security groups."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:ec2-network"
+frameworks:
+  nist_800_53: [SC-7]
+  iso_27001_2022: [A.8.20, A.8.21]
+  soc2: [CC6.6]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "Customer owns network access control."

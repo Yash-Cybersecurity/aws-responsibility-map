@@ -1,0 +1,13 @@
+s3:
+  - https://docs.aws.amazon.com/AmazonS3/latest/userguide/security.html
+  - https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingEncryption.html
+  - https://docs.aws.amazon.com/AmazonS3/latest/userguide/data-protection.html
+ec2:
+  - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html
+  - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/data-protection.html
+iam:
+  - https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+rds:
+  - https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html
+bedrock:
+  - https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html

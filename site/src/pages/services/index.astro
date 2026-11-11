@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const entries = await getCollection('entries');
+const services = [...new Set(entries.map(e => e.data.service))].sort();
+---
+<Base title="Services">
+  <h1 class="text-xl font-bold mb-4">Services</h1>
+  <ul class="list-disc pl-6">
+    {services.map(s => <li><a href={`/services/${s}`} class="underline">{s}</a></li>)}
+  </ul>
+</Base>

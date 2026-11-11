@@ -1,0 +1,22 @@
+service: s3
+control_domain: encryption-in-transit
+overall: shared
+responsibility:
+  aws: "Supports SSL/TLS for data in transit."
+  customer: "Enforce HTTPS/TLS in bucket policies and clients."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingEncryption.html
+    source_type: aws-doc
+    quote: "You can protect data in transit by using Secure Socket Layer/Transport Layer Security (SSL/TLS)."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:s3-enc-transit"
+frameworks:
+  nist_800_53: [SC-8]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.7]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "AWS provides TLS; customer must enforce it."

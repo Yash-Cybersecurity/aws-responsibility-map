@@ -1,0 +1,31 @@
+---
+import '../styles/global.css';
+const { title = 'AWS Shared Responsibility Reference' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+    <header class="border-b p-4">
+      <nav class="flex gap-4">
+        <a href="/" class="font-bold">AWS Responsibility Map</a>
+        <a href="/matrix">Matrix</a>
+        <a href="/services">Services</a>
+        <a href="/controls">Controls</a>
+        <a href="/changes">Changes</a>
+        <a href="/about">About</a>
+      </nav>
+      <p class="text-xs text-gray-500 mt-2">Unofficial community project. Not affiliated with or endorsed by AWS.</p>
+    </header>
+    <main class="p-4 max-w-6xl mx-auto">
+      <slot />
+    </main>
+    <footer class="border-t p-4 text-xs text-gray-500">
+      Unofficial community project. Not affiliated with or endorsed by AWS. AWS documentation and AWS Artifact are authoritative.
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+name: Error report
+description: Report an incorrect responsibility assignment
+title: "[Error] "
+labels: ["error-report"]
+body:
+  - type: input
+    id: service
+    attributes: { label: Service }
+  - type: input
+    id: control
+    attributes: { label: Control domain }
+  - type: textarea
+    id: details
+    attributes: { label: What is wrong and the correct source }

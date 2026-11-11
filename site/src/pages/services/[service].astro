@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+export async function getStaticPaths() {
+  const entries = await getCollection('entries');
+  const services = [...new Set(entries.map(e => e.data.service))];
+  return services.map(s => ({ params: { service: s } }));
+}
+const { service } = Astro.params;
+const entries = (await getCollection('entries')).filter(e => e.data.service === service);
+---
+<Base title={service}>
+  <h1 class="text-xl font-bold mb-4">{service}</h1>
+  <table class="min-w-full border text-sm">
+    <thead><tr><th class="border p-2">Control</th><th class="border p-2">Owner</th><th class="border p-2">Review</th></tr></thead>
+    <tbody>
+      {entries.map(e => (
+        <tr>
+          <td class="border p-2"><a href={`/controls/${e.data.control_domain}`} class="underline">{e.data.control_domain}</a></td>
+          <td class="border p-2">{e.data.overall}</td>
+          <td class="border p-2">{e.data.review.status} ({e.data.review.reviewed_on})</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  {entries.map(e => (
+    <details class="mt-4 border p-2">
+      <summary class="font-semibold">{e.data.control_domain}</summary>
+      <p class="mt-2"><strong>AWS:</strong> {e.data.responsibility?.aws ?? '—'}</p>
+      <p><strong>Customer:</strong> {e.data.responsibility?.customer ?? '—'}</p>
+      {e.data.responsibility?.model_provider && <p><strong>Model provider:</strong> {e.data.responsibility.model_provider}</p>}
+      {e.data.sources?.[0] && <p class="mt-2 text-xs">Source: <a href={e.data.sources[0].url} class="underline">{e.data.sources[0].url}</a><br/>Quote: "{e.data.sources[0].quote}" (retrieved {e.data.sources[0].retrieved})</p>}
+      {e.data.review?.rationale && <p class="mt-2 text-xs italic">{e.data.review.rationale}</p>}
+    </details>
+  ))}
+</Base>

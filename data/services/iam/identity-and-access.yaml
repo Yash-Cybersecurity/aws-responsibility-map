@@ -1,0 +1,22 @@
+service: iam
+control_domain: identity-and-access
+overall: shared
+responsibility:
+  aws: "Provides IAM infrastructure, authentication and authorization services."
+  customer: "Create and manage users, groups, roles, policies."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+    source_type: aws-doc
+    quote: "AWS Identity and Access Management (IAM) is a web service that helps you securely control access to AWS resources."
+    retrieved: "2026-11-05"
+    content_hash: "sha256:iam-id"
+frameworks:
+  nist_800_53: [AC-2, AC-3, AC-6]
+  iso_27001_2022: [A.5.15, A.5.16, A.5.18]
+  soc2: [CC6.1, CC6.2, CC6.3]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-05"
+  confidence: high
+  rationale: "AWS provides IAM; customer configures identities."

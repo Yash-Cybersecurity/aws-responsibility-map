@@ -6,6 +6,10 @@ A public, change-tracked reference that answers, for a given AWS service and sec
 
 Every cell ships with a source URL, a short verbatim quote, and a retrieval date. `not_stated` is a first-class value; we never guess.
 
+## Live site
+
+https://yash-cybersecurity.github.io/aws-responsibility-map/
+
 ## Quick links
 
 - Legend (responsibility vocabulary)

@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
+---
+<Base title="Search">
+  <h1 class="text-xl font-bold mb-4">Search</h1>
+  <input id="q" class="border p-2 w-full mb-4" placeholder="Try EC2, S3, encryption, AC-2..." />
+  <ul id="results" class="space-y-2"></ul>
+  <script define:vars={{ base }}>
+    const res = await fetch(base + 'data/index.json');
+    const entries = await res.json();
+    const q = document.getElementById('q');
+    const out = document.getElementById('results');
+    function render() {
+      const term = q.value.toLowerCase().trim();
+      if (!term) { out.innerHTML = '<li class="text-gray-500">Type to search.</li>'; return; }
+      const hits = entries.filter(e =>
+        (e.service + ' ' + e.control_domain + ' ' + e.overall + ' ' +
+         JSON.stringify(e.frameworks || {})).toLowerCase().includes(term)
+      ).slice(0, 50);
+      out.innerHTML = hits.map(e =>
+        `<li class="border p-2"><a class="underline" href="${base}services/${e.service}">${e.service}</a> · ${e.control_domain} · <strong>${e.overall}</strong></li>`
+      ).join('') || '<li>No matches.</li>';
+    }
+    q.addEventListener('input', render);
+    render();
+  </script>
+</Base>

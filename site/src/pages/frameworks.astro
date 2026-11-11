@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import fs from 'node:fs';
+import yaml from 'js-yaml';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
+const read = (f) => yaml.load(fs.readFileSync(`../data/frameworks/${f}`, 'utf8')).mappings;
+const frameworks = [
+  { id: 'nist-800-53', name: 'NIST 800-53', map: read('nist-800-53.yaml') },
+  { id: 'iso-27001-2022', name: 'ISO 27001:2022', map: read('iso-27001-2022.yaml') },
+  { id: 'soc2', name: 'SOC 2', map: read('soc2.yaml') },
+];
+---
+<Base title="Frameworks">
+  <h1 class="text-xl font-bold mb-4">Frameworks</h1>
+  {frameworks.map(fw => (
+    <section class="mb-6">
+      <h2 class="font-semibold mb-2">{fw.name}</h2>
+      <table class="min-w-full border text-sm">
+        <thead><tr><th class="border p-2">Control domain</th><th class="border p-2">{fw.name} controls</th></tr></thead>
+        <tbody>
+          {Object.entries(fw.map).map(([control, ids]) => (
+            <tr>
+              <td class="border p-2"><a href={`${base}controls/${control}`} class="underline">{control}</a></td>
+              <td class="border p-2">{(ids as string[]).join(', ')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  ))}
+</Base>

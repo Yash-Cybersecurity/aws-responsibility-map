@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
+---
+<Base title="Compare">
+  <h1 class="text-xl font-bold mb-4">Compare two services</h1>
+  <div class="flex gap-2 mb-4">
+    <select id="a" class="border p-2"></select>
+    <select id="b" class="border p-2"></select>
+  </div>
+  <table class="min-w-full border text-sm">
+    <thead><tr><th class="border p-2">Control</th><th class="border p-2" id="ha">A</th><th class="border p-2" id="hb">B</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <script define:vars={{ base }}>
+    const res = await fetch(base + 'data/index.json');
+    const entries = await res.json();
+    const services = [...new Set(entries.map(e => e.service))].sort();
+    const a = document.getElementById('a');
+    const b = document.getElementById('b');
+    services.forEach(s => { a.add(new Option(s, s)); b.add(new Option(s, s)); });
+    b.selectedIndex = Math.min(1, services.length - 1);
+    document.getElementById('ha').textContent = a.value;
+    document.getElementById('hb').textContent = b.value;
+    function render() {
+      document.getElementById('ha').textContent = a.value;
+      document.getElementById('hb').textContent = b.value;
+      const controls = [...new Set(entries.map(e => e.control_domain))].sort();
+      const get = (s, c) => entries.find(e => e.service === s && e.control_domain === c)?.overall || 'not_stated';
+      document.getElementById('rows').innerHTML = controls.map(c =>
+        `<tr><td class="border p-2">${c}</td><td class="border p-2">${get(a.value, c)}</td><td class="border p-2">${get(b.value, c)}</td></tr>`
+      ).join('');
+    }
+    a.addEventListener('change', render);
+    b.addEventListener('change', render);
+    render();
+  </script>
+</Base>

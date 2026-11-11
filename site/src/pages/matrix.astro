@@ -5,6 +5,7 @@ const entries = await getCollection('entries');
 const services = [...new Set(entries.map(e => e.data.service))].sort();
 const controls = [...new Set(entries.map(e => e.data.control_domain))].sort();
 const lookup = new Map(entries.map(e => [e.data.service + '|' + e.data.control_domain, e.data.overall]));
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 const color = { aws:'bg-blue-100 text-blue-800', customer:'bg-orange-100 text-orange-800', shared:'bg-purple-100 text-purple-800', model_provider:'bg-green-100 text-green-800', not_stated:'bg-gray-100 text-gray-500' };
 ---
 <Base title="Matrix">
@@ -30,5 +31,5 @@ const color = { aws:'bg-blue-100 text-blue-800', customer:'bg-orange-100 text-or
       </tbody>
     </table>
   </div>
-  <p class="mt-4 text-sm"><a href="/legend" class="underline">Legend</a></p>
+  <p class="mt-4 text-sm"><a href={`${base}legend`} class="underline">Legend</a></p>
 </Base>

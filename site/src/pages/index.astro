@@ -4,15 +4,16 @@ import { getCollection } from 'astro:content';
 const entries = await getCollection('entries');
 const services = [...new Set(entries.map(e => e.data.service))];
 const controls = [...new Set(entries.map(e => e.data.control_domain))];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 ---
 <Base title="AWS Shared Responsibility Reference">
   <h1 class="text-2xl font-bold mb-2">AWS Shared Responsibility Reference</h1>
   <p class="mb-4">Unofficial community reference: who owns each security control for an AWS service.</p>
   <div class="grid grid-cols-3 gap-4 mb-6">
-    <a href="/services" class="border p-4 rounded">By service</a>
-    <a href="/controls" class="border p-4 rounded">By control</a>
-    <a href="/changes" class="border p-4 rounded">What changed</a>
+    <a href={`${base}services`} class="border p-4 rounded">By service</a>
+    <a href={`${base}controls`} class="border p-4 rounded">By control</a>
+    <a href={`${base}changes`} class="border p-4 rounded">What changed</a>
   </div>
   <p class="text-sm">Entries: {entries.length} · Services: {services.length} · Controls: {controls.length}</p>
-  <p class="text-sm mt-2"><a href="/matrix" class="underline">View matrix</a> · <a href="/legend" class="underline">Legend</a> · <a href="/about" class="underline">About</a></p>
+  <p class="text-sm mt-2"><a href={`${base}matrix`} class="underline">View matrix</a> · <a href={`${base}legend`} class="underline">Legend</a> · <a href={`${base}about`} class="underline">About</a></p>
 </Base>

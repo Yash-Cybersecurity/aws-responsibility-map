@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 const { title = 'AWS Shared Responsibility Reference' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 ---
 <!doctype html>
 <html lang="en">
@@ -12,12 +13,12 @@ const { title = 'AWS Shared Responsibility Reference' } = Astro.props;
   <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
     <header class="border-b p-4">
       <nav class="flex gap-4">
-        <a href="/" class="font-bold">AWS Responsibility Map</a>
-        <a href="/matrix">Matrix</a>
-        <a href="/services">Services</a>
-        <a href="/controls">Controls</a>
-        <a href="/changes">Changes</a>
-        <a href="/about">About</a>
+        <a href={base} class="font-bold">AWS Responsibility Map</a>
+        <a href={`${base}matrix`}>Matrix</a>
+        <a href={`${base}services`}>Services</a>
+        <a href={`${base}controls`}>Controls</a>
+        <a href={`${base}changes`}>Changes</a>
+        <a href={`${base}about`}>About</a>
       </nav>
       <p class="text-xs text-gray-500 mt-2">Unofficial community project. Not affiliated with or endorsed by AWS.</p>
     </header>

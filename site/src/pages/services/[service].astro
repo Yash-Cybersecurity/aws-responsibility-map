@@ -7,6 +7,7 @@ export async function getStaticPaths() {
   return services.map(s => ({ params: { service: s } }));
 }
 const { service } = Astro.params;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 const entries = (await getCollection('entries')).filter(e => e.data.service === service);
 ---
 <Base title={service}>
@@ -16,7 +17,7 @@ const entries = (await getCollection('entries')).filter(e => e.data.service === 
     <tbody>
       {entries.map(e => (
         <tr>
-          <td class="border p-2"><a href={`/controls/${e.data.control_domain}`} class="underline">{e.data.control_domain}</a></td>
+          <td class="border p-2"><a href={`${base}controls/${e.data.control_domain}`} class="underline">{e.data.control_domain}</a></td>
           <td class="border p-2">{e.data.overall}</td>
           <td class="border p-2">{e.data.review.status} ({e.data.review.reviewed_on})</td>
         </tr>

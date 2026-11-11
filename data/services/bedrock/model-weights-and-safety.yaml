@@ -1,0 +1,21 @@
+service: bedrock
+control_domain: model-weights-and-safety
+deployment_scope: genai-scope-3
+sub_feature: base-model
+layer: model
+overall: not_stated
+responsibility:
+  aws: "Operates Model Deployment Accounts per model provider in each Region."
+  customer: "Select an appropriate model and validate its behavior for your use case."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html
+    source_type: aws-doc
+    quote: "These accounts are owned and operated by the Amazon Bedrock service team. Model providers don't have any access to those accounts."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:bedrock-model-safety"
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: low
+  rationale: "The docs describe deployment accounts but do not assign base-model safety ownership. model_provider stays null until provider terms state it."

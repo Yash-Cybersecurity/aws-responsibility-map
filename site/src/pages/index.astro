@@ -1,19 +1,73 @@
 ---
 import Base from '../layouts/Base.astro';
+import StatusBadge from '../components/StatusBadge.astro';
 import { getCollection } from 'astro:content';
 const entries = await getCollection('entries');
-const services = [...new Set(entries.map(e => e.data.service))];
-const controls = [...new Set(entries.map(e => e.data.control_domain))];
+const services = [...new Set(entries.map(e => e.data.service))].sort();
+const controls = [...new Set(entries.map(e => e.data.control_domain))].sort();
+const reviewed = entries.filter(e => e.data.review.status === 'human_reviewed').length;
+const lastReview = entries.map(e => e.data.review.reviewed_on).sort().at(-1) ?? '—';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 ---
-<Base title="AWS Shared Responsibility Reference">
-  <h1 class="text-2xl font-bold mb-2">AWS Shared Responsibility Reference</h1>
-  <p class="mb-4">Unofficial community reference: who owns each security control for an AWS service.</p>
-  <div class="grid grid-cols-3 gap-4 mb-6">
-    <a href={`${base}services`} class="border p-4 rounded">By service</a>
-    <a href={`${base}controls`} class="border p-4 rounded">By control</a>
-    <a href={`${base}changes`} class="border p-4 rounded">What changed</a>
+<Base title="Who owns this control?">
+  <section class="max-w-3xl">
+    <div class="flex items-center gap-2 mb-5 text-sm">
+      <span class="text-slate-500">I am a</span>
+      <div id="roles" class="flex gap-2">
+        {['Customer','Vendor','Auditor'].map((r, i) => (
+          <button data-role={r.toLowerCase()} class={`rounded-full border px-4 py-1.5 text-sm font-semibold ${i === 0 ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-300 bg-white text-slate-700'}`}>{r}</button>
+        ))}
+      </div>
+    </div>
+
+    <h1 class="text-4xl sm:text-5xl font-extrabold leading-[1.05] tracking-tight">
+      Who owns this control:<br class="hidden sm:block" /> AWS, you, or both?
+    </h1>
+    <p class="mt-4 text-lg text-slate-600 max-w-2xl">
+      An unofficial, sourced and change-tracked reference for shared responsibility, by service and by control.
+    </p>
+
+    <form action={`${base}search`} method="get" class="mt-6 flex gap-3 max-w-2xl">
+      <input name="q" class="input" placeholder="Search a service or control, e.g. S3 encryption or AC-2" aria-label="Search" />
+      <button class="btn-primary px-6" type="submit">Search</button>
+    </form>
+  </section>
+
+  <section class="grid md:grid-cols-3 gap-5 mt-10">
+    <a href={`${base}services`} class="card p-6 hover:border-slate-300 transition">
+      <h2 class="text-xl font-bold">By service</h2>
+      <p class="mt-2 text-sm leading-relaxed text-slate-600">Start with S3, EC2, IAM, RDS or Bedrock and see every control with its owner.</p>
+      <div class="mt-4 flex gap-2"><StatusBadge value="aws" size="sm" /><StatusBadge value="customer" size="sm" /></div>
+    </a>
+    <a href={`${base}controls`} class="card p-6 hover:border-slate-300 transition">
+      <h2 class="text-xl font-bold">By control</h2>
+      <p class="mt-2 text-sm leading-relaxed text-slate-600">Pick a control, such as encryption at rest, and compare ownership across services.</p>
+      <div class="mt-4 flex gap-2"><StatusBadge value="shared" size="sm" /><StatusBadge value="not_stated" size="sm" /></div>
+    </a>
+    <a href={`${base}changes`} class="card p-6 hover:border-slate-300 transition">
+      <h2 class="text-xl font-bold">What changed</h2>
+      <p class="mt-2 text-sm leading-relaxed text-slate-600">Defaults flip and ownership moves. Track reviewed changes with sources.</p>
+      <p class="mt-4 text-sm font-semibold underline decoration-slate-300 underline-offset-2">View change feed →</p>
+    </a>
+  </section>
+
+  <div class="mt-10 pt-6 border-t border-slate-200 flex flex-wrap gap-x-10 gap-y-2 text-sm text-slate-500">
+    <span>Last human review: <strong class="text-slate-700">{lastReview}</strong></span>
+    <span>Entries reviewed: <strong class="text-slate-700">{reviewed}</strong> of <strong class="text-slate-700">{entries.length}</strong></span>
+    <span>Services: <strong class="text-slate-700">{services.length}</strong></span>
+    <span>Control domains: <strong class="text-slate-700">{controls.length}</strong></span>
   </div>
-  <p class="text-sm">Entries: {entries.length} · Services: {services.length} · Controls: {controls.length}</p>
-  <p class="text-sm mt-2"><a href={`${base}matrix`} class="underline">View matrix</a> · <a href={`${base}legend`} class="underline">Legend</a> · <a href={`${base}about`} class="underline">About</a></p>
+
+  <script define:vars={{ base }}>
+    const roles = [...document.querySelectorAll('#roles button')];
+    roles.forEach(btn => btn.addEventListener('click', () => {
+      roles.forEach(b => { b.className = 'rounded-full border px-4 py-1.5 text-sm font-semibold border-slate-300 bg-white text-slate-700'; });
+      btn.className = 'rounded-full border px-4 py-1.5 text-sm font-semibold border-slate-900 bg-slate-900 text-white';
+      const url = new URL(location.href);
+      url.searchParams.set('role', btn.dataset.role);
+      history.replaceState({}, '', url);
+    }));
+    const role = new URL(location.href).searchParams.get('role');
+    if (role) roles.find(b => b.dataset.role === role)?.click();
+  </script>
 </Base>

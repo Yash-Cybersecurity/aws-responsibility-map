@@ -1,0 +1,22 @@
+service: rds
+control_domain: physical-security
+overall: aws
+responsibility:
+  aws: "AWS is responsible for protecting the global infrastructure that runs all of the AWS Cloud."
+  customer: null
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/DataDurability.html
+    source_type: aws-doc
+    quote: "AWS is responsible for protecting the global infrastructure that runs all of the AWS Cloud."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:rds-physical"
+frameworks:
+  nist_800_53: [PE-1, PE-3]
+  iso_27001_2022: [A.7.1, A.7.2]
+  soc2: [CC6.4]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "AWS owns physical infrastructure."

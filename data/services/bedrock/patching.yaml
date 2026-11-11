@@ -1,0 +1,22 @@
+service: bedrock
+control_domain: patching
+overall: aws
+responsibility:
+  aws: "Patches and secures the managed Amazon Bedrock service infrastructure."
+  customer: null
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/security.html
+    source_type: aws-doc
+    quote: "Security of the cloud – AWS is responsible for protecting the infrastructure that runs AWS services in the AWS Cloud."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:bedrock-patching"
+frameworks:
+  nist_800_53: [SI-2]
+  iso_27001_2022: [A.8.8]
+  soc2: [CC7.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: medium
+  rationale: "Bedrock is fully managed; AWS patches the service infrastructure. Customers do not patch Bedrock itself."

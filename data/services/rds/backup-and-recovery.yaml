@@ -1,0 +1,22 @@
+service: rds
+control_domain: backup-and-recovery
+overall: shared
+responsibility:
+  aws: "Provides automated backups and snapshots."
+  customer: "Configure retention, copy snapshots and test restores."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html
+    source_type: aws-doc
+    quote: "You don't have to configure security access for processes that Amazon RDS manages. These include creating backups."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:rds-backup"
+frameworks:
+  nist_800_53: [CP-9, CP-10]
+  iso_27001_2022: [A.8.13]
+  soc2: [A1.2]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: medium
+  rationale: "AWS runs backups; customer owns retention and restore testing."

@@ -1,0 +1,22 @@
+service: s3
+control_domain: configuration-management
+overall: customer
+responsibility:
+  aws: "Provides AWS Config and S3 security best practices."
+  customer: "Enable AWS Config and audit bucket configuration."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/vulnerability-analysis-and-management.html
+    source_type: aws-doc
+    quote: "Enable AWS Config"
+    retrieved: "2026-11-11"
+    content_hash: "sha256:s3-config"
+frameworks:
+  nist_800_53: [CM-2, CM-6]
+  iso_27001_2022: [A.8.9]
+  soc2: [CC8.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "Customer configures and audits buckets."

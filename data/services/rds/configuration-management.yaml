@@ -1,0 +1,22 @@
+service: rds
+control_domain: configuration-management
+overall: customer
+responsibility:
+  aws: null
+  customer: "Own the security configuration and management tasks for the AWS services that you use."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/DataDurability.html
+    source_type: aws-doc
+    quote: "You are also responsible for the security configuration and management tasks for the AWS services that you use."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:rds-config"
+frameworks:
+  nist_800_53: [CM-2, CM-6]
+  iso_27001_2022: [A.8.9]
+  soc2: [CC8.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "Customer owns RDS configuration."

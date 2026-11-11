@@ -1,0 +1,22 @@
+service: iam
+control_domain: incident-response
+overall: shared
+responsibility:
+  aws: "Provides access activity logs and findings."
+  customer: "Investigate and respond to credential or permission incidents."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+    source_type: aws-doc
+    quote: "Regularly review and remove unused users, roles, permissions, policies, and credentials."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:iam-ir"
+frameworks:
+  nist_800_53: [IR-4, IR-6]
+  iso_27001_2022: [A.5.24, A.5.26]
+  soc2: [CC7.4, CC7.5]
+review:
+  status: draft
+  reviewed_on: "2026-11-11"
+  confidence: low
+  rationale: "Draft: the response split needs a dedicated incident-response source."

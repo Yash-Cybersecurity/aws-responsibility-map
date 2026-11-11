@@ -1,0 +1,22 @@
+service: iam
+control_domain: configuration-management
+overall: customer
+responsibility:
+  aws: null
+  customer: "Apply IAM security best practices: least privilege, MFA, federation and guardrails."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+    source_type: aws-doc
+    quote: "To help secure your AWS resources, follow these best practices for AWS Identity and Access Management (IAM)."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:iam-config"
+frameworks:
+  nist_800_53: [CM-2, CM-6]
+  iso_27001_2022: [A.8.9]
+  soc2: [CC8.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "Customer configures IAM policies and guardrails."

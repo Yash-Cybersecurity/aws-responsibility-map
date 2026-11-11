@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
 import { getCollection } from 'astro:content';
+
 export async function getStaticPaths() {
   const entries = await getCollection('entries');
   const services = [...new Set(entries.map(e => e.data.service))];
@@ -8,30 +10,144 @@ export async function getStaticPaths() {
 }
 const { service } = Astro.params;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
-const entries = (await getCollection('entries')).filter(e => e.data.service === service);
+const all = (await getCollection('entries')).filter(e => e.data.service === service);
+const NAME: Record<string, string> = { s3: 'Amazon S3', ec2: 'Amazon EC2', iam: 'AWS IAM', rds: 'Amazon RDS', bedrock: 'Amazon Bedrock' };
+const SHORT: Record<string, string> = {
+  'encryption-at-rest': 'Encryption at rest', 'encryption-in-transit': 'Encryption in transit',
+  'key-management': 'Key management', 'identity-and-access': 'Identity and access',
+  'network-exposure': 'Network exposure', 'logging-and-monitoring': 'Logging and monitoring',
+  'patching': 'Patching', 'backup-and-recovery': 'Backup and recovery',
+  'data-classification': 'Data classification', 'vulnerability-management': 'Vulnerability management',
+  'physical-security': 'Physical security', 'incident-response': 'Incident response',
+  'configuration-management': 'Configuration management', 'prompt-and-data-handling': 'Prompts and data handling',
+  'guardrails-and-output-filtering': 'Guardrails and output filtering',
+  'model-weights-and-safety': 'Model weights and safety',
+  'model-output-liability': 'Model output liability',
+  'availability-and-resilience': 'Availability and resilience',
+  'data-retention': 'Data retention',
+  'data-residency': 'Data residency',
+};
+const LAYER: Record<string, string> = {
+  infra: 'Infrastructure and platform', model: 'Model weights and base safety', data: 'Prompts, RAG data and training data',
+  application: 'Guardrails, access and application', governance: 'Logging, privacy and oversight',
+};
+const isAI = service === 'bedrock';
+const actions = all.flatMap(e => (e.data.customer_actions || []).map((a: any) => ({ ...a, control: e.data.control_domain })));
+const general = all.filter(e => !e.data.layer || !e.data.deployment_scope);
+const layered = all.filter(e => e.data.layer && e.data.deployment_scope);
+const LAYER_ORDER = ['infra', 'model', 'data', 'application', 'governance'];
+const layers = LAYER_ORDER.filter(l => layered.some(e => e.data.layer === l));
+const scopes = [
+  ['genai-scope-1', 'Scope 1-2 · Buy an AI app'],
+  ['genai-scope-3', 'Scope 3 · Use a model as is'],
+  ['genai-scope-4', 'Scope 4 · Fine-tune a model'],
+  ['genai-scope-5', 'Scope 5 · Train your own'],
+];
 ---
-<Base title={service}>
-  <h1 class="text-xl font-bold mb-4">{service}</h1>
-  <table class="min-w-full border text-sm">
-    <thead><tr><th class="border p-2">Control</th><th class="border p-2">Owner</th><th class="border p-2">Review</th></tr></thead>
-    <tbody>
-      {entries.map(e => (
-        <tr>
-          <td class="border p-2"><a href={`${base}controls/${e.data.control_domain}`} class="underline">{e.data.control_domain}</a></td>
-          <td class="border p-2">{e.data.overall}</td>
-          <td class="border p-2">{e.data.review.status} ({e.data.review.reviewed_on})</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-  {entries.map(e => (
-    <details class="mt-4 border p-2">
-      <summary class="font-semibold">{e.data.control_domain}</summary>
-      <p class="mt-2"><strong>AWS:</strong> {e.data.responsibility?.aws ?? '—'}</p>
-      <p><strong>Customer:</strong> {e.data.responsibility?.customer ?? '—'}</p>
-      {e.data.responsibility?.model_provider && <p><strong>Model provider:</strong> {e.data.responsibility.model_provider}</p>}
-      {e.data.sources?.[0] && <p class="mt-2 text-xs">Source: <a href={e.data.sources[0].url} class="underline">{e.data.sources[0].url}</a><br/>Quote: "{e.data.sources[0].quote}" (retrieved {e.data.sources[0].retrieved})</p>}
-      {e.data.review?.rationale && <p class="mt-2 text-xs italic">{e.data.review.rationale}</p>}
-    </details>
-  ))}
+<Base title={NAME[service] || service}>
+  <nav class="text-sm text-slate-500 mb-2">
+    <a href={`${base}services`} class="hover:text-slate-800">Services</a>
+    <span class="mx-1.5">›</span>
+    <span class="text-slate-700">{NAME[service] || service}</span>
+    {isAI && <><span class="mx-1.5">›</span><span class="text-slate-700">Scope 3</span></>}
+  </nav>
+
+  <h1 class="text-4xl font-extrabold">{NAME[service] || service}</h1>
+  <p class="mt-2 text-slate-600 max-w-2xl">{all.length} reviewed control entries. Every owner claim carries a source, a short quote and a review date.</p>
+
+  {actions.length > 0 && (
+    <section class="card p-5 mt-6 border-l-4 border-l-orange-400">
+      <h2 class="font-bold">Your checklist</h2>
+      <p class="text-sm text-slate-600 mt-1">What the customer must configure for {NAME[service] || service}.</p>
+      <ul class="mt-3 space-y-1.5 text-sm">
+        {actions.map(a => <li class="flex gap-2"><span class="text-orange-500">●</span><span><strong>{SHORT[a.control] || a.control}:</strong> {a.type === 'config_rule' ? `AWS Config rule ${a.id}` : a.path || a.type}</span></li>)}
+      </ul>
+    </section>
+  )}
+
+  {isAI && layered.length > 0 && (
+    <section class="mt-8">
+      <h2 class="font-bold">How are you using it?</h2>
+      <div id="scopes" class="mt-3 flex flex-wrap gap-2">
+        {scopes.map(([id, label], i) => (
+          <button data-scope={id} class={`rounded-lg border px-4 py-2 text-sm font-semibold ${i === 1 ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-300 bg-white text-slate-700'}`}>{label}</button>
+        ))}
+      </div>
+      <div class="mt-3 flex items-center gap-3 text-sm text-slate-600">
+        <span>Your ownership grows with scope:</span>
+        <span class="flex gap-1" id="meter">{[1,2,3,4,5].map(n => <span class={`h-1.5 w-8 rounded-full ${n <= 3 ? 'bg-slate-900' : 'bg-slate-300'}`}></span>)}</span>
+        <span id="scopeLabel">Scope 3 of 5</span>
+      </div>
+
+      <div class="mt-5 space-y-2">
+        {layers.map(layer => (
+          <div class="card px-5 py-4 grid sm:grid-cols-[1fr_auto_1.4fr] gap-3 items-center" data-layer={layer}>
+            <div class="font-semibold">{LAYER[layer] || layer}</div>
+            <div>{(() => { const e = layered.filter(x => x.data.layer === layer).sort((a,b) => (a.data.deployment_scope || '').localeCompare(b.data.deployment_scope || ''))[0]; return <StatusBadge value={e?.data.overall || 'not_stated'} size="sm" />; })()}</div>
+            <div class="text-sm text-slate-600">{layered.filter(x => x.data.layer === layer)[0]?.data.responsibility?.customer || 'What this means for you: see the entry for the quoted split.'}</div>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 text-xs text-slate-500">Legend: <StatusBadge value="aws" size="sm" /> <StatusBadge value="model_provider" size="sm" /> <StatusBadge value="customer" size="sm" /> <StatusBadge value="shared" size="sm" /> <StatusBadge value="not_stated" size="sm" /></p>
+      <p class="mt-2 text-xs text-slate-500">Every real cell shows its source, quote and review date. Liability for model output is a contract question, not a technical control.</p>
+    </section>
+  )}
+
+  <section class="mt-8">
+    <h2 class="text-xl font-bold mb-3">All controls</h2>
+    <div class="card overflow-hidden">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-50 border-b border-slate-200">
+          <tr><th class="th">Control</th><th class="th">Owner</th><th class="th">Review</th><th class="th">Frameworks</th></tr>
+        </thead>
+        <tbody>
+          {all.map(e => (
+            <tr class="border-t border-slate-100 align-top">
+              <td class="td"><a class="link font-medium" href={`${base}controls/${e.data.control_domain}`}>{SHORT[e.data.control_domain] || e.data.control_domain}</a></td>
+              <td class="td"><StatusBadge value={e.data.overall} size="sm" /></td>
+              <td class="td text-slate-600">{e.data.review.status === 'human_reviewed' ? 'Reviewed' : e.data.review.status} {e.data.review.reviewed_on}</td>
+              <td class="td text-xs text-slate-500">
+                {[...(e.data.frameworks?.nist_800_53 || []).map((x: string) => 'NIST ' + x), ...(e.data.frameworks?.iso_27001_2022 || []).map((x: string) => 'ISO ' + x), ...(e.data.frameworks?.soc2 || []).map((x: string) => 'SOC 2 ' + x)].join(' · ') || '—'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mt-8 space-y-3">
+    {all.map(e => (
+      <details class="card p-5">
+        <summary class="cursor-pointer font-semibold flex items-center gap-3 flex-wrap">{SHORT[e.data.control_domain] || e.data.control_domain} <StatusBadge value={e.data.overall} size="sm" /></summary>
+        <div class="mt-3 space-y-2 text-sm">
+          <p><strong>AWS:</strong> {e.data.responsibility?.aws ?? '—'}</p>
+          <p><strong>You:</strong> {e.data.responsibility?.customer ?? '—'}</p>
+          {e.data.responsibility?.model_provider && <p><strong>Model provider:</strong> {e.data.responsibility.model_provider}</p>}
+          {e.data.sources?.[0] && (
+            <blockquote class="border-l-2 border-slate-300 pl-3 italic text-slate-600">“{e.data.sources[0].quote}”</blockquote>
+          )}
+          {e.data.sources?.[0] && (
+            <p class="text-xs text-slate-500">Source: <a class="link" href={e.data.sources[0].url} target="_blank" rel="noopener">{e.data.sources[0].url}</a> · Retrieved {e.data.sources[0].retrieved} · Reviewed {e.data.review.reviewed_on}</p>
+          )}
+          {e.data.review?.rationale && <p class="text-xs italic text-slate-500">{e.data.review.rationale}</p>}
+        </div>
+      </details>
+    ))}
+  </section>
+
+  {isAI && (
+    <script define:vars={{ base }}>
+      const scopeToLevel = { 'genai-scope-1': 2, 'genai-scope-2': 2, 'genai-scope-3': 3, 'genai-scope-4': 4, 'genai-scope-5': 5 };
+      const buttons = [...document.querySelectorAll('#scopes button')];
+      function setScope(id) {
+        buttons.forEach(b => { b.className = 'rounded-lg border px-4 py-2 text-sm font-semibold ' + (b.dataset.scope === id ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-300 bg-white text-slate-700'); });
+        const level = scopeToLevel[id] || 3;
+        document.getElementById('scopeLabel').textContent = 'Scope ' + level + ' of 5';
+        [...document.querySelectorAll('#meter span')].forEach((s, i) => { s.className = 'h-1.5 w-8 rounded-full ' + (i < level ? 'bg-slate-900' : 'bg-slate-300'); });
+      }
+      buttons.forEach(b => b.addEventListener('click', () => setScope(b.dataset.scope)));
+      setScope('genai-scope-3');
+    </script>
+  )}
 </Base>

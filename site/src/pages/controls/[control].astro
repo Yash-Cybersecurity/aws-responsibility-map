@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
 import { getCollection } from 'astro:content';
 export async function getStaticPaths() {
   const entries = await getCollection('entries');
@@ -9,18 +10,56 @@ export async function getStaticPaths() {
 const { control } = Astro.params;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 const entries = (await getCollection('entries')).filter(e => e.data.control_domain === control);
+const SHORT: Record<string, string> = {
+  'encryption-at-rest': 'Encryption at rest', 'encryption-in-transit': 'Encryption in transit',
+  'key-management': 'Key management', 'identity-and-access': 'Identity and access',
+  'network-exposure': 'Network exposure', 'logging-and-monitoring': 'Logging and monitoring',
+  'patching': 'Patching', 'backup-and-recovery': 'Backup and recovery',
+  'data-classification': 'Data classification', 'vulnerability-management': 'Vulnerability management',
+  'physical-security': 'Physical security', 'incident-response': 'Incident response',
+  'configuration-management': 'Configuration management', 'prompt-and-data-handling': 'Prompts and data handling',
+  'guardrails-and-output-filtering': 'Guardrails and output filtering',
+  'model-weights-and-safety': 'Model weights and safety',
+  'model-output-liability': 'Model output liability',
+  'availability-and-resilience': 'Availability and resilience',
+  'data-retention': 'Data retention',
+  'data-residency': 'Data residency',
+};
+const NAME: Record<string, string> = { s3: 'Amazon S3', ec2: 'Amazon EC2', iam: 'AWS IAM', rds: 'Amazon RDS', bedrock: 'Amazon Bedrock' };
 ---
-<Base title={control}>
-  <h1 class="text-xl font-bold mb-4">{control}</h1>
-  <table class="min-w-full border text-sm">
-    <thead><tr><th class="border p-2">Service</th><th class="border p-2">Owner</th></tr></thead>
-    <tbody>
-      {entries.map(e => (
-        <tr>
-          <td class="border p-2"><a href={`${base}services/${e.data.service}`} class="underline">{e.data.service}</a></td>
-          <td class="border p-2">{e.data.overall}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+<Base title={SHORT[control] || control}>
+  <nav class="text-sm text-slate-500 mb-2">
+    <a href={`${base}controls`} class="hover:text-slate-800">Controls</a><span class="mx-1.5">›</span><span class="text-slate-700">{SHORT[control] || control}</span>
+  </nav>
+  <h1 class="text-3xl font-extrabold">{SHORT[control] || control}</h1>
+  <p class="mt-1 text-sm text-slate-600">Ownership across services. Select a service to see the full entry.</p>
+
+  <div class="card mt-6 overflow-hidden">
+    <table class="min-w-full text-sm">
+      <thead class="bg-slate-50 border-b border-slate-200"><tr><th class="th">Service</th><th class="th">Owner</th><th class="th">Confidence</th><th class="th">Reviewed</th></tr></thead>
+      <tbody>
+        {entries.sort((a,b) => a.data.service.localeCompare(b.data.service)).map(e => (
+          <tr class="border-t border-slate-100">
+            <td class="td"><a class="link font-medium" href={`${base}services/${e.data.service}`}>{NAME[e.data.service] || e.data.service}</a></td>
+            <td class="td"><StatusBadge value={e.data.overall} size="sm" /></td>
+            <td class="td text-slate-600">{e.data.review.confidence || '—'}</td>
+            <td class="td text-slate-600">{e.data.review.reviewed_on}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-6 space-y-3">
+    {entries.map(e => (
+      <details class="card p-5">
+        <summary class="cursor-pointer font-semibold flex items-center gap-3">{NAME[e.data.service] || e.data.service} <StatusBadge value={e.data.overall} size="sm" /></summary>
+        <div class="mt-3 space-y-2 text-sm">
+          <p><strong>AWS:</strong> {e.data.responsibility?.aws ?? '—'}</p>
+          <p><strong>You:</strong> {e.data.responsibility?.customer ?? '—'}</p>
+          {e.data.review?.rationale && <p class="text-xs italic text-slate-500">{e.data.review.rationale}</p>}
+        </div>
+      </details>
+    ))}
+  </div>
 </Base>

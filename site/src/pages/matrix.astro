@@ -1,35 +1,164 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getCollection } from 'astro:content';
-const entries = await getCollection('entries');
-const services = [...new Set(entries.map(e => e.data.service))].sort();
-const controls = [...new Set(entries.map(e => e.data.control_domain))].sort();
-const lookup = new Map(entries.map(e => [e.data.service + '|' + e.data.control_domain, e.data.overall]));
+import StatusBadge from '../components/StatusBadge.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
-const color = { aws:'bg-blue-100 text-blue-800', customer:'bg-orange-100 text-orange-800', shared:'bg-purple-100 text-purple-800', model_provider:'bg-green-100 text-green-800', not_stated:'bg-gray-100 text-gray-500' };
 ---
-<Base title="Matrix">
-  <h1 class="text-xl font-bold mb-4">Responsibility matrix</h1>
-  <div class="overflow-x-auto">
-    <table class="min-w-full border text-sm">
-      <thead>
-        <tr>
-          <th class="border p-2 sticky left-0 bg-white">Service</th>
-          {controls.map(c => <th class="border p-2">{c}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        {services.map(s => (
-          <tr>
-            <td class="border p-2 font-semibold sticky left-0 bg-white">{s}</td>
-            {controls.map(c => {
-              const v = lookup.get(s+'|'+c) || 'not_stated';
-              return <td class={`border p-2 ${color[v]}`}>{v}</td>;
-            })}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+<Base title="Responsibility matrix">
+  <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-3xl font-extrabold">Responsibility matrix</h1>
+      <p class="mt-1 text-sm text-slate-600">Select a cell to see the source, quote and customer actions.</p>
+    </div>
+    <div class="flex flex-wrap items-end gap-3">
+      <label class="text-xs font-semibold text-slate-600">Owner
+        <select id="owner" class="mt-1 block rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+          <option value="all">All</option>
+          <option value="aws">AWS</option>
+          <option value="customer">Customer</option>
+          <option value="shared">Shared</option>
+          <option value="model_provider">Model provider</option>
+          <option value="not_stated">Not stated</option>
+        </select>
+      </label>
+      <label class="text-xs font-semibold text-slate-600">Framework
+        <select id="framework" class="mt-1 block rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm">
+          <option value="all">All</option>
+          <option value="nist_800_53">NIST 800-53</option>
+          <option value="iso_27001_2022">ISO 27001:2022</option>
+          <option value="soc2">SOC 2</option>
+        </select>
+      </label>
+      <a href={`${base}data/export.csv`} class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:border-slate-900">Export CSV</a>
+    </div>
   </div>
-  <p class="mt-4 text-sm"><a href={`${base}legend`} class="underline">Legend</a></p>
+
+  <div class="grid lg:grid-cols-[1fr_340px] gap-6 items-start">
+    <div class="card overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-50 border-b border-slate-200">
+            <tr id="head"></tr>
+          </thead>
+          <tbody id="body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <aside id="panel" class="card p-5 lg:sticky lg:top-6">
+      <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Cell details</p>
+      <p class="mt-2 text-sm text-slate-600">Select any cell in the matrix to see the explanation, quote, source and frameworks.</p>
+    </aside>
+  </div>
+
+  <div class="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-600">
+    <span class="font-semibold text-slate-500">Legend:</span>
+    <StatusBadge value="aws" size="sm" />
+    <StatusBadge value="customer" size="sm" />
+    <StatusBadge value="shared" size="sm" />
+    <StatusBadge value="model_provider" size="sm" />
+    <StatusBadge value="not_stated" size="sm" />
+  </div>
+
+  <script define:vars={{ base }}>
+    (async () => {
+    const SHORT = {
+      'encryption-at-rest': 'Encryption at rest',
+      'encryption-in-transit': 'In transit',
+      'key-management': 'Key mgmt',
+      'identity-and-access': 'Access',
+      'network-exposure': 'Network',
+      'logging-and-monitoring': 'Logging',
+      'patching': 'Patching',
+      'backup-and-recovery': 'Backup',
+      'data-classification': 'Data class',
+      'vulnerability-management': 'Vulnerability',
+      'physical-security': 'Physical',
+      'incident-response': 'Incident',
+      'configuration-management': 'Config',
+      'prompt-and-data-handling': 'Prompts & data',
+      'guardrails-and-output-filtering': 'Guardrails',
+      'model-weights-and-safety': 'Model safety',
+      'model-output-liability': 'Model liability',
+      'availability-and-resilience': 'Availability',
+      'data-retention': 'Retention',
+      'data-residency': 'Residency',
+    };
+    const LABEL = { aws: 'AWS', customer: 'Customer', shared: 'Shared', model_provider: 'Model provider', not_stated: 'Not stated' };
+    const ICON = { aws: '●', customer: '●', shared: '◆', model_provider: '▲', not_stated: '–' };
+    const CLS = {
+      aws: 'bg-[#dbeafe] text-[#1d4ed8]', customer: 'bg-[#ffedd5] text-[#9a3412]',
+      shared: 'bg-[#f3e8ff] text-[#6b21a8]', model_provider: 'bg-[#d1fae5] text-[#047857]',
+      not_stated: 'bg-[#e5e7eb] text-[#374151]',
+    };
+
+    const entries = await (await fetch(base + 'data/index.json')).json();
+    const services = [...new Set(entries.map(e => e.service))].sort();
+    const controls = [...new Set(entries.map(e => e.control_domain))].sort();
+    const get = (s, c) => entries.find(e => e.service === s && e.control_domain === c);
+    const ownerSel = document.getElementById('owner');
+    const fwSel = document.getElementById('framework');
+    const head = document.getElementById('head');
+    const body = document.getElementById('body');
+    const panel = document.getElementById('panel');
+
+    function visibleControls() {
+      const fw = fwSel.value;
+      if (fw === 'all') return controls;
+      return controls.filter(c => entries.some(e => e.control_domain === c && e.frameworks && e.frameworks[fw]));
+    }
+
+    function badge(v, small = true) {
+      return `<span class="inline-flex items-center gap-1.5 rounded-md font-semibold whitespace-nowrap px-2 py-0.5 text-[11px] ${CLS[v]}"><span class="text-[0.7em]">${ICON[v]}</span>${LABEL[v]}</span>`;
+    }
+
+    function render() {
+      const cols = visibleControls();
+      const owner = ownerSel.value;
+      head.innerHTML = `<th class="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-slate-700 sticky left-0 bg-slate-50 z-10">Service</th>` +
+        cols.map(c => `<th class="px-4 py-3 text-left text-xs font-bold text-slate-700 whitespace-nowrap">${SHORT[c] || c}</th>`).join('');
+      body.innerHTML = services.map(s => {
+        const cells = cols.map(c => {
+          const e = get(s, c);
+          const v = e?.overall || 'not_stated';
+          const dim = owner !== 'all' && v !== owner ? 'opacity-25' : '';
+          return `<td class="px-4 py-3 border-t border-slate-100 ${dim}"><button data-s="${s}" data-c="${c}" class="cursor-pointer">${badge(v)}</button></td>`;
+        }).join('');
+        return `<tr><th scope="row" class="px-4 py-3 text-left text-sm font-semibold border-t border-slate-100 sticky left-0 bg-white z-10">${s}</th>${cells}</tr>`;
+      }).join('');
+      body.querySelectorAll('button[data-s]').forEach(b => b.addEventListener('click', () => show(b.dataset.s, b.dataset.c)));
+    }
+
+    function show(s, c) {
+      const e = get(s, c);
+      if (!e) { panel.innerHTML = `<p class="text-sm text-slate-600">No entry yet for <strong>${s} · ${SHORT[c] || c}</strong>. It renders as <strong>Not stated</strong> until reviewed.</p>`; return; }
+      const src = e.sources?.[0] || {};
+      const fw = e.frameworks || {};
+      const fwLine = [
+        ...(fw.nist_800_53 || []).map(x => 'NIST ' + x),
+        ...(fw.iso_27001_2022 || []).map(x => 'ISO ' + x),
+        ...(fw.soc2 || []).map(x => 'SOC 2 ' + x),
+      ].join(' · ');
+      panel.innerHTML = `
+        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">${s} · ${SHORT[c] || c}</p>
+        <div class="mt-2">${badge(e.overall, false)}</div>
+        <p class="mt-4 text-sm"><strong>AWS:</strong> ${e.responsibility?.aws ?? '—'}</p>
+        <p class="mt-1 text-sm"><strong>You:</strong> ${e.responsibility?.customer ?? '—'}</p>
+        ${e.responsibility?.model_provider ? `<p class="mt-1 text-sm"><strong>Model provider:</strong> ${e.responsibility.model_provider}</p>` : ''}
+        ${src.quote ? `<blockquote class="mt-4 border-l-2 border-slate-300 pl-3 text-sm italic text-slate-600">“${src.quote}”</blockquote>` : ''}
+        ${src.url ? `<p class="mt-3 text-xs text-slate-500">Source: <a class="link" href="${src.url}" target="_blank" rel="noopener">${src.url}</a> · Retrieved ${src.retrieved || '—'} · Reviewed ${e.review?.reviewed_on || '—'}</p>` : ''}
+        ${fwLine ? `<p class="mt-3 text-xs text-slate-500">${fwLine}</p>` : ''}
+        <button id="copy" class="mt-4 w-full rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">Copy citation</button>
+      `;
+      document.getElementById('copy').addEventListener('click', async () => {
+        const text = `${s} · ${SHORT[c] || c} · ${LABEL[e.overall]} · ${src.url || ''} · retrieved ${src.retrieved || '—'} · ${location.href}`;
+        await navigator.clipboard.writeText(text);
+        document.getElementById('copy').textContent = 'Copied';
+      });
+    }
+
+    ownerSel.addEventListener('change', render);
+    fwSel.addEventListener('change', render);
+    render();
+    })();
+  </script>
 </Base>

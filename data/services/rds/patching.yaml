@@ -1,0 +1,22 @@
+service: rds
+control_domain: patching
+overall: shared
+responsibility:
+  aws: "Applies DB engine patches during the maintenance window."
+  customer: "Choose maintenance windows and apply OS/application patches where applicable."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html
+    source_type: aws-doc
+    quote: "You have to configure security only for your use cases. You don't have to configure security access for processes that Amazon RDS manages."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:rds-patching"
+frameworks:
+  nist_800_53: [SI-2]
+  iso_27001_2022: [A.8.8]
+  soc2: [CC7.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: medium
+  rationale: "AWS patches the managed engine; customer schedules and handles app-level patching."

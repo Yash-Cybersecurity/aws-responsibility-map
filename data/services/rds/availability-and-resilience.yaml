@@ -1,0 +1,22 @@
+service: rds
+control_domain: availability-and-resilience
+overall: shared
+responsibility:
+  aws: "Provides Multi-AZ deployments and managed failover."
+  customer: "Enable Multi-AZ and test failover for your databases."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html
+    source_type: aws-doc
+    quote: "A Multi-AZ DB instance deployment has one standby DB instance that provides failover support, but doesn't serve read traffic."
+    retrieved: "2026-11-12"
+    content_hash: "sha256:rds-availability"
+frameworks:
+  nist_800_53: [CP-6, CP-7]
+  iso_27001_2022: [A.8.13, A.8.14]
+  soc2: [A1.1, A1.2]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-12"
+  confidence: high
+  rationale: "AWS supplies Multi-AZ and failover; the customer chooses the deployment and tests it."

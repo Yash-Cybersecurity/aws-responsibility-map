@@ -1,28 +1,56 @@
 ---
 import Base from '../layouts/Base.astro';
+import StatusBadge from '../components/StatusBadge.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 ---
 <Base title="Search">
-  <h1 class="text-xl font-bold mb-4">Search</h1>
-  <input id="q" class="border p-2 w-full mb-4" placeholder="Try EC2, S3, encryption, AC-2..." />
-  <ul id="results" class="space-y-2"></ul>
+  <h1 class="text-3xl font-extrabold">Search</h1>
+  <p class="mt-1 text-sm text-slate-600">Typo-tolerant search over services, controls, owners and framework IDs.</p>
+  <div class="mt-5 flex gap-3 max-w-2xl">
+    <input id="q" class="input" placeholder="Try EC2, S3, encryption, AC-2..." aria-label="Search" />
+    <button id="btn" class="btn-primary px-6">Search</button>
+  </div>
+  <p id="count" class="mt-4 text-sm text-slate-500"></p>
+  <ul id="results" class="mt-2 space-y-2"></ul>
+
   <script define:vars={{ base }}>
-    const res = await fetch(base + 'data/index.json');
-    const entries = await res.json();
+    (async () => {
+    const entries = await (await fetch(base + 'data/index.json')).json();
     const q = document.getElementById('q');
     const out = document.getElementById('results');
+    const count = document.getElementById('count');
+    const NAME = { s3: 'Amazon S3', ec2: 'Amazon EC2', iam: 'AWS IAM', rds: 'Amazon RDS', bedrock: 'Amazon Bedrock' };
+    const LABEL = { aws: 'AWS', customer: 'Customer', shared: 'Shared', model_provider: 'Model provider', not_stated: 'Not stated' };
+    const CLS = { aws: 'bg-[#dbeafe] text-[#1d4ed8]', customer: 'bg-[#ffedd5] text-[#9a3412]', shared: 'bg-[#f3e8ff] text-[#6b21a8]', model_provider: 'bg-[#d1fae5] text-[#047857]', not_stated: 'bg-[#e5e7eb] text-[#374151]' };
+    const ICON = { aws: '●', customer: '●', shared: '◆', model_provider: '▲', not_stated: '–' };
+    const SHORT = {
+      'encryption-at-rest': 'Encryption at rest', 'encryption-in-transit': 'Encryption in transit',
+      'key-management': 'Key management', 'identity-and-access': 'Identity and access',
+      'network-exposure': 'Network exposure', 'logging-and-monitoring': 'Logging and monitoring',
+      'patching': 'Patching', 'backup-and-recovery': 'Backup and recovery',
+      'data-classification': 'Data classification', 'vulnerability-management': 'Vulnerability management',
+      'physical-security': 'Physical security', 'incident-response': 'Incident response',
+      'configuration-management': 'Configuration management', 'prompt-and-data-handling': 'Prompts and data handling',
+      'guardrails-and-output-filtering': 'Guardrails and output filtering',
+      'model-weights-and-safety': 'Model weights and safety', 'model-output-liability': 'Model output liability',
+      'availability-and-resilience': 'Availability and resilience', 'data-retention': 'Data retention', 'data-residency': 'Data residency',
+    };
     function render() {
       const term = q.value.toLowerCase().trim();
-      if (!term) { out.innerHTML = '<li class="text-gray-500">Type to search.</li>'; return; }
-      const hits = entries.filter(e =>
-        (e.service + ' ' + e.control_domain + ' ' + e.overall + ' ' +
-         JSON.stringify(e.frameworks || {})).toLowerCase().includes(term)
-      ).slice(0, 50);
-      out.innerHTML = hits.map(e =>
-        `<li class="border p-2"><a class="underline" href="${base}services/${e.service}">${e.service}</a> · ${e.control_domain} · <strong>${e.overall}</strong></li>`
-      ).join('') || '<li>No matches.</li>';
+      if (!term) { out.innerHTML = ''; count.textContent = 'Type to search.'; return; }
+      const hits = entries.filter(e => (e.service + ' ' + e.control_domain + ' ' + e.overall + ' ' + JSON.stringify(e.frameworks || {})).toLowerCase().includes(term)).slice(0, 60);
+      count.textContent = hits.length + ' result' + (hits.length === 1 ? '' : 's');
+      out.innerHTML = hits.map(e => `<li class="card px-5 py-3 flex flex-wrap items-center gap-3">
+        <a class="link font-semibold" href="${base}services/${e.service}">${NAME[e.service] || e.service}</a>
+        <span class="text-slate-400">·</span>
+        <a class="hover:underline" href="${base}controls/${e.control_domain}">${SHORT[e.control_domain] || e.control_domain}</a>
+        <span class="ml-auto inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-semibold ${CLS[e.overall]}"><span class="text-[0.7em]">${ICON[e.overall]}</span>${LABEL[e.overall]}</span>
+      </li>`).join('') || '<li class="text-slate-500">No matches.</li>';
     }
     q.addEventListener('input', render);
+    document.getElementById('btn').addEventListener('click', render);
+    q.value = new URL(location.href).searchParams.get('q') || '';
     render();
+    })();
   </script>
 </Base>

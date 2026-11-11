@@ -1,0 +1,22 @@
+service: iam
+control_domain: encryption-in-transit
+overall: aws
+responsibility:
+  aws: "Encrypts IAM and AWS STS traffic in transit using TLS 1.2 and 1.3."
+  customer: null
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/IAM/latest/UserGuide/data-protection.html
+    source_type: aws-doc
+    quote: "Customer identifying data, including passwords, is encrypted in transit using TLS 1.2 and 1.3."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:iam-enc-transit"
+frameworks:
+  nist_800_53: [SC-8]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.7]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "IAM enforces TLS for its own endpoints; there is no customer-side transport encryption to enable."

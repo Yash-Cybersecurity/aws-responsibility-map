@@ -1,0 +1,22 @@
+service: rds
+control_domain: incident-response
+overall: shared
+responsibility:
+  aws: "Provides event notifications and support."
+  customer: "Monitor events and respond to database incidents."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.LoggingAndMonitoring.html
+    source_type: aws-doc
+    quote: "Amazon RDS uses the Amazon Simple Notification Service (Amazon SNS) to provide notification when an Amazon RDS event occurs."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:rds-ir"
+frameworks:
+  nist_800_53: [IR-4, IR-6]
+  iso_27001_2022: [A.5.24, A.5.26]
+  soc2: [CC7.4, CC7.5]
+review:
+  status: draft
+  reviewed_on: "2026-11-11"
+  confidence: low
+  rationale: "Draft: notification is sourced; the response split needs review."

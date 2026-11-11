@@ -1,0 +1,22 @@
+service: bedrock
+control_domain: model-output-liability
+deployment_scope: genai-scope-3
+sub_feature: base-model
+layer: governance
+contractual: true
+overall: not_stated
+responsibility:
+  aws: null
+  customer: null
+  model_provider: null
+sources:
+  - url: https://aws.amazon.com/service-terms/
+    source_type: provider-terms
+    quote: "This is a contract question, not a technical control. See the AWS Service Terms."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:bedrock-liability"
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: low
+  rationale: "Liability for model output is governed by contract terms. It is deliberately not assigned as a technical control."

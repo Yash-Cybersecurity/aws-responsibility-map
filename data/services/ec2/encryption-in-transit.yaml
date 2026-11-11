@@ -1,0 +1,22 @@
+service: ec2
+control_domain: encryption-in-transit
+overall: customer
+responsibility:
+  aws: "Encrypts traffic on the AWS global network at the physical layer."
+  customer: "Use an encryption protocol such as TLS between clients and your instances."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/data-protection.html
+    source_type: aws-doc
+    quote: "It is your responsibility to use an encryption protocol, such as Transport Layer Security (TLS), to encrypt sensitive data in transit between clients and your Amazon EC2 instances."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:ec2-enc-transit"
+frameworks:
+  nist_800_53: [SC-8]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.7]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "AWS secures the network fabric; the customer owns application-level TLS."

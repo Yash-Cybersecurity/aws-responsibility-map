@@ -32,7 +32,7 @@
         "type": "object",
         "required": ["url", "quote", "retrieved", "content_hash"],
         "properties": {
-          "url": {"type": "string", "pattern": "^https://docs\\.aws\\.amazon\\.com/"},
+          "url": {"type": "string", "pattern": "^https://(docs\\.aws\\.amazon\\.com|aws\\.amazon\\.com)/"},
           "source_type": {"enum": ["aws-doc", "provider-terms", "aws-blog"]},
           "quote": {"type": "string", "maxLength": 200},
           "retrieved": {"type": "string"},

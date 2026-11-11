@@ -1,0 +1,22 @@
+service: ec2
+control_domain: key-management
+overall: shared
+responsibility:
+  aws: "Provides AWS KMS and manages keys for instance-store encryption."
+  customer: "Create, rotate and restrict KMS keys used for EBS encryption."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/data-protection.html
+    source_type: aws-doc
+    quote: "The keys used to encrypt data that's written to locally-attached NVMe storage devices are per-customer, and per volume."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:ec2-kms"
+frameworks:
+  nist_800_53: [SC-12]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: medium
+  rationale: "AWS manages instance-store keys; customer manages KMS keys for EBS."

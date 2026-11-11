@@ -1,0 +1,17 @@
+---
+interface Props { value: string; size?: 'sm' | 'md'; }
+const { value, size = 'md' } = Astro.props;
+const map: Record<string, { label: string; cls: string; icon: string }> = {
+  aws: { label: 'AWS', cls: 'bg-[#dbeafe] text-[#1d4ed8]', icon: '●' },
+  customer: { label: 'Customer', cls: 'bg-[#ffedd5] text-[#9a3412]', icon: '●' },
+  shared: { label: 'Shared', cls: 'bg-[#f3e8ff] text-[#6b21a8]', icon: '◆' },
+  model_provider: { label: 'Model provider', cls: 'bg-[#d1fae5] text-[#047857]', icon: '▲' },
+  not_stated: { label: 'Not stated', cls: 'bg-[#e5e7eb] text-[#374151]', icon: '–' },
+};
+const s = map[value] ?? map.not_stated;
+const pad = size === 'sm' ? 'px-2 py-0.5 text-[11px]' : 'px-2.5 py-1 text-xs';
+---
+<span class={`inline-flex items-center gap-1.5 rounded-md font-semibold whitespace-nowrap ${pad} ${s.cls}`}>
+  <span aria-hidden="true" class="text-[0.7em] leading-none">{s.icon}</span>
+  {s.label}
+</span>

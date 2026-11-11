@@ -1,0 +1,22 @@
+service: iam
+control_domain: network-exposure
+overall: shared
+responsibility:
+  aws: "Provides IAM Access Analyzer for public and cross-account access findings."
+  customer: "Verify and restrict public and cross-account access."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html
+    source_type: aws-doc
+    quote: "Before you grant permissions for public or cross-account access in AWS, we recommend that you verify if such access is required."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:iam-network"
+frameworks:
+  nist_800_53: [SC-7]
+  iso_27001_2022: [A.8.20, A.8.21]
+  soc2: [CC6.6]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "AWS provides analysis; customer restricts access."

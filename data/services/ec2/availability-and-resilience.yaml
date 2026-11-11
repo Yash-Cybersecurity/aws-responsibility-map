@@ -1,0 +1,22 @@
+service: ec2
+control_domain: availability-and-resilience
+overall: shared
+responsibility:
+  aws: "Operates physically separated Availability Zones with low-latency, redundant networking."
+  customer: "Spread instances across Availability Zones and use Auto Scaling and Elastic Load Balancing."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/disaster-recovery-resiliency.html
+    source_type: aws-doc
+    quote: "With Availability Zones, you can design and operate applications and databases that automatically fail over between zones without interruption."
+    retrieved: "2026-11-12"
+    content_hash: "sha256:ec2-availability"
+frameworks:
+  nist_800_53: [CP-6, CP-7]
+  iso_27001_2022: [A.8.13, A.8.14]
+  soc2: [A1.1, A1.2]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-12"
+  confidence: high
+  rationale: "AWS provides the Availability Zones; the customer architects across them."

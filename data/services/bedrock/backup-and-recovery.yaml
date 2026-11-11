@@ -1,0 +1,18 @@
+service: bedrock
+control_domain: backup-and-recovery
+overall: not_stated
+responsibility:
+  aws: "Operates the managed service infrastructure."
+  customer: "Plan for continuity of your prompts, knowledge bases and integrations."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html
+    source_type: aws-doc
+    quote: "You are responsible for maintaining control over your content that is hosted on this infrastructure."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:bedrock-backup"
+review:
+  status: draft
+  reviewed_on: "2026-11-11"
+  confidence: low
+  rationale: "Draft: the docs do not state a Bedrock backup ownership split. Needs a resilience source."

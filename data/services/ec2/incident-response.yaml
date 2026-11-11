@@ -1,0 +1,22 @@
+service: ec2
+control_domain: incident-response
+overall: shared
+responsibility:
+  aws: "Provides detection services and incident response support."
+  customer: "Monitor, detect and respond to incidents in your instances and applications."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html
+    source_type: aws-doc
+    quote: "Security is a shared responsibility between AWS and you."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:ec2-ir"
+frameworks:
+  nist_800_53: [IR-4, IR-6]
+  iso_27001_2022: [A.5.24, A.5.26]
+  soc2: [CC7.4, CC7.5]
+review:
+  status: draft
+  reviewed_on: "2026-11-11"
+  confidence: low
+  rationale: "Draft: the split is general; verify against incident response docs before promoting."

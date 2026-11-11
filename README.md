@@ -21,8 +21,8 @@ https://yash-cybersecurity.github.io/aws-responsibility-map/
 ## v1 scope
 
 - Services: S3, EC2, IAM, RDS, Bedrock
-- Control domains (~15): encryption at rest, encryption in transit, key management, identity and access, network exposure, logging and monitoring, patching, backup and recovery, data classification, vulnerability management, physical security, incident response, configuration management, prompt and data handling (AI), guardrails and output filtering (AI)
-- Target ~75 reviewed entries
+- Control domains (20): encryption at rest, encryption in transit, key management, identity and access, network exposure, logging and monitoring, patching, backup and recovery, availability and resilience, data classification, data retention, data residency, vulnerability management, physical security, incident response, configuration management, prompt and data handling (AI), guardrails and output filtering (AI), model weights and safety (AI), model output liability (contract)
+- 75 entries across the five services; drafts are marked as drafts until a human review is recorded
 
 ## Stack
 

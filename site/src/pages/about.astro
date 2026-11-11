@@ -3,8 +3,26 @@ import Base from '../layouts/Base.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 ---
 <Base title="About">
-  <h1 class="text-xl font-bold mb-4">About</h1>
-  <p>This is an unofficial community project. Not affiliated with or endorsed by AWS. AWS documentation and AWS Artifact are authoritative.</p>
-  <p class="mt-2">Method: detect, draft, review, publish. Every cell has a URL, a short quote, and a retrieval date.</p>
-  <p class="mt-2">Evaluation results: <a class="underline" href={`${base}evaluation`}>see the evaluation page</a>.</p>
+  <h1 class="text-3xl font-extrabold">About</h1>
+  <p class="mt-3 text-lg text-slate-600 max-w-3xl">An unofficial, sourced and change-tracked reference for AWS shared responsibility.</p>
+  <div class="grid md:grid-cols-2 gap-5 mt-6">
+    <section class="card p-6">
+      <h2 class="font-bold">Method</h2>
+      <p class="mt-2 text-sm text-slate-600">Detect, draft, review, publish. Automation finds changes and drafts text; a human approves every merge. Every cell has a URL, a short verbatim quote, and a retrieval date.</p>
+    </section>
+    <section class="card p-6">
+      <h2 class="font-bold">Limitations</h2>
+      <p class="mt-2 text-sm text-slate-600">Not audit, legal or compliance advice. <span class="font-semibold">not_stated</span> means the documentation does not say; we never guess. AWS documentation and AWS Artifact are authoritative.</p>
+    </section>
+    <section class="card p-6">
+      <h2 class="font-bold">Evaluation</h2>
+      <p class="mt-2 text-sm text-slate-600">The hand-written entries are a gold set. Drafts are scored for accuracy and quote validity.</p>
+      <a class="mt-3 inline-block text-sm font-semibold underline decoration-slate-300 underline-offset-2" href={`${base}evaluation`}>See evaluation results →</a>
+    </section>
+    <section class="card p-6">
+      <h2 class="font-bold">Report an error</h2>
+      <p class="mt-2 text-sm text-slate-600">Found a wrong owner or a broken source? Open an issue with the service, control and correct source.</p>
+      <a class="mt-3 inline-block text-sm font-semibold underline decoration-slate-300 underline-offset-2" href="https://github.com/Yash-Cybersecurity/aws-responsibility-map/issues/new/choose">Open an issue →</a>
+    </section>
+  </div>
 </Base>

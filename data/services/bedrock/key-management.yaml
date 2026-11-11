@@ -1,0 +1,22 @@
+service: bedrock
+control_domain: key-management
+overall: shared
+responsibility:
+  aws: "Provides AWS KMS integration."
+  customer: "Manage KMS keys used for Bedrock encryption."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html
+    source_type: aws-doc
+    quote: "Use AWS encryption solutions, along with all default security controls within AWS services."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:bedrock-kms"
+frameworks:
+  nist_800_53: [SC-12]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: medium
+  rationale: "AWS provides KMS; customer manages keys."

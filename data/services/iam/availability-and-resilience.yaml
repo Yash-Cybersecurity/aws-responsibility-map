@@ -1,0 +1,22 @@
+service: iam
+control_domain: availability-and-resilience
+overall: aws
+responsibility:
+  aws: "Replicates IAM data across multiple servers and data centers for high availability."
+  customer: null
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+    source_type: aws-doc
+    quote: "IAM achieves high availability by replicating data across multiple servers within Amazon's data centers around the world."
+    retrieved: "2026-11-12"
+    content_hash: "sha256:iam-availability"
+frameworks:
+  nist_800_53: [CP-6, CP-7]
+  iso_27001_2022: [A.8.13, A.8.14]
+  soc2: [A1.1, A1.2]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-12"
+  confidence: high
+  rationale: "AWS operates IAM availability; there is no customer-side resilience setting."

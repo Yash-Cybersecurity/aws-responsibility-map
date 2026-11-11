@@ -1,0 +1,22 @@
+service: rds
+control_domain: key-management
+overall: shared
+responsibility:
+  aws: "Provides AWS KMS integration for RDS encryption."
+  customer: "Choose and manage KMS keys used to encrypt DB instances and snapshots."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html
+    source_type: aws-doc
+    quote: "Amazon RDS encryption uses the industry standard AES-256 encryption algorithm to encrypt your data on the server that hosts your DB instance."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:rds-kms"
+frameworks:
+  nist_800_53: [SC-12]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: medium
+  rationale: "AWS provides the encryption engine; customer manages KMS keys."

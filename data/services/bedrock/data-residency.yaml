@@ -1,0 +1,18 @@
+service: bedrock
+control_domain: data-residency
+overall: customer
+responsibility:
+  aws: "Provides per-Region retention settings and optional cross-region inference."
+  customer: "Choose the Regions used for inference and data retention."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html
+    source_type: aws-doc
+    quote: "If cross-region inference is enabled for these models, retained inputs and outputs are stored in destination Regions."
+    retrieved: "2026-11-12"
+    content_hash: "sha256:bedrock-residency"
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-12"
+  confidence: medium
+  rationale: "Retention is set per Region and cross-region inference determines where data lands, so the customer chooses the Regions."

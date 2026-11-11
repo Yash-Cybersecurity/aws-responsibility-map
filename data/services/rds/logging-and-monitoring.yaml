@@ -1,0 +1,22 @@
+service: rds
+control_domain: logging-and-monitoring
+overall: shared
+responsibility:
+  aws: "Provides CloudWatch, CloudTrail, Enhanced Monitoring, Performance Insights and database logs."
+  customer: "Collect monitoring data and configure alarms and log exports."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.LoggingAndMonitoring.html
+    source_type: aws-doc
+    quote: "You should collect monitoring data from all of the parts of your AWS solution so that you can more easily debug a multi-point failure if one occurs."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:rds-logging"
+frameworks:
+  nist_800_53: [AU-2, AU-3, AU-6]
+  iso_27001_2022: [A.8.15, A.8.16]
+  soc2: [CC7.2, CC7.3]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "AWS provides the monitoring tools; customer collects and acts."

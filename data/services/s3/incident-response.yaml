@@ -1,0 +1,22 @@
+service: s3
+control_domain: incident-response
+overall: shared
+responsibility:
+  aws: "Provides CloudTrail and GuardDuty detection for S3."
+  customer: "Enable detection and respond to S3 incidents."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonS3/latest/userguide/security.html
+    source_type: aws-doc
+    quote: "Enabling detective controls such as AWS CloudTrail or Amazon GuardDuty for Amazon S3."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:s3-ir"
+frameworks:
+  nist_800_53: [IR-4, IR-6]
+  iso_27001_2022: [A.5.24, A.5.26]
+  soc2: [CC7.4, CC7.5]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "AWS provides detection; customer responds."

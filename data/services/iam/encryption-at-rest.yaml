@@ -1,0 +1,22 @@
+service: iam
+control_domain: encryption-at-rest
+overall: aws
+responsibility:
+  aws: "Encrypts data collected and stored by IAM at rest using AES-256 or hashes it with SHA-256."
+  customer: null
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/IAM/latest/UserGuide/data-protection.html
+    source_type: aws-doc
+    quote: "Data that is collected and stored by IAM is encrypted at rest."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:iam-enc-rest"
+frameworks:
+  nist_800_53: [SC-28]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "IAM encrypts its stored data itself; the customer has no at-rest encryption setting to configure."

@@ -1,0 +1,22 @@
+service: bedrock
+control_domain: data-retention
+overall: customer
+responsibility:
+  aws: "Provides configurable retention modes at the account and project level."
+  customer: "Set a data retention mode and enforce it with IAM policies or SCPs."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-retention.html
+    source_type: aws-doc
+    quote: "Amazon Bedrock gives you explicit control over whether the prompts and outputs from your inference requests are retained."
+    retrieved: "2026-11-12"
+    content_hash: "sha256:bedrock-retention"
+frameworks:
+  nist_800_53: [AU-11]
+  iso_27001_2022: [A.8.10]
+  soc2: [C1.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-12"
+  confidence: high
+  rationale: "The docs state retention is the customer's choice and responsibility to configure."

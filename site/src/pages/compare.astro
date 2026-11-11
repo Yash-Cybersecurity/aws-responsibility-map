@@ -3,36 +3,52 @@ import Base from '../layouts/Base.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 ---
 <Base title="Compare">
-  <h1 class="text-xl font-bold mb-4">Compare two services</h1>
-  <div class="flex gap-2 mb-4">
-    <select id="a" class="border p-2"></select>
-    <select id="b" class="border p-2"></select>
+  <h1 class="text-3xl font-extrabold">Compare two services</h1>
+  <p class="mt-1 text-sm text-slate-600">A teaching tool: see where ownership differs between services.</p>
+  <div class="flex flex-wrap gap-3 mt-5">
+    <select id="a" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"></select>
+    <select id="b" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"></select>
   </div>
-  <table class="min-w-full border text-sm">
-    <thead><tr><th class="border p-2">Control</th><th class="border p-2" id="ha">A</th><th class="border p-2" id="hb">B</th></tr></thead>
-    <tbody id="rows"></tbody>
-  </table>
+  <div class="card mt-5 overflow-hidden">
+    <table class="min-w-full text-sm">
+      <thead class="bg-slate-50 border-b border-slate-200"><tr><th class="th">Control</th><th class="th" id="ha">A</th><th class="th" id="hb">B</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
   <script define:vars={{ base }}>
-    const res = await fetch(base + 'data/index.json');
-    const entries = await res.json();
+    (async () => {
+    const entries = await (await fetch(base + 'data/index.json')).json();
     const services = [...new Set(entries.map(e => e.service))].sort();
+    const LABEL = { aws: 'AWS', customer: 'Customer', shared: 'Shared', model_provider: 'Model provider', not_stated: 'Not stated' };
+    const CLS = { aws: 'bg-[#dbeafe] text-[#1d4ed8]', customer: 'bg-[#ffedd5] text-[#9a3412]', shared: 'bg-[#f3e8ff] text-[#6b21a8]', model_provider: 'bg-[#d1fae5] text-[#047857]', not_stated: 'bg-[#e5e7eb] text-[#374151]' };
+    const ICON = { aws: '●', customer: '●', shared: '◆', model_provider: '▲', not_stated: '–' };
+    const SHORT = {
+      'encryption-at-rest': 'Encryption at rest', 'encryption-in-transit': 'Encryption in transit',
+      'key-management': 'Key management', 'identity-and-access': 'Identity and access',
+      'network-exposure': 'Network exposure', 'logging-and-monitoring': 'Logging and monitoring',
+      'patching': 'Patching', 'backup-and-recovery': 'Backup and recovery',
+      'data-classification': 'Data classification', 'vulnerability-management': 'Vulnerability management',
+      'physical-security': 'Physical security', 'incident-response': 'Incident response',
+      'configuration-management': 'Configuration management', 'prompt-and-data-handling': 'Prompts and data handling',
+      'guardrails-and-output-filtering': 'Guardrails and output filtering',
+      'model-weights-and-safety': 'Model weights and safety', 'model-output-liability': 'Model output liability',
+      'availability-and-resilience': 'Availability and resilience', 'data-retention': 'Data retention', 'data-residency': 'Data residency',
+    };
+    const badge = v => `<span class="inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-[11px] font-semibold ${CLS[v]}"><span class="text-[0.7em]">${ICON[v]}</span>${LABEL[v]}</span>`;
     const a = document.getElementById('a');
     const b = document.getElementById('b');
     services.forEach(s => { a.add(new Option(s, s)); b.add(new Option(s, s)); });
     b.selectedIndex = Math.min(1, services.length - 1);
-    document.getElementById('ha').textContent = a.value;
-    document.getElementById('hb').textContent = b.value;
     function render() {
       document.getElementById('ha').textContent = a.value;
       document.getElementById('hb').textContent = b.value;
       const controls = [...new Set(entries.map(e => e.control_domain))].sort();
       const get = (s, c) => entries.find(e => e.service === s && e.control_domain === c)?.overall || 'not_stated';
       document.getElementById('rows').innerHTML = controls.map(c =>
-        `<tr><td class="border p-2">${c}</td><td class="border p-2">${get(a.value, c)}</td><td class="border p-2">${get(b.value, c)}</td></tr>`
+        `<tr class="border-t border-slate-100"><td class="td font-medium">${SHORT[c] || c}</td><td class="td">${badge(get(a.value, c))}</td><td class="td">${badge(get(b.value, c))}</td></tr>`
       ).join('');
     }
-    a.addEventListener('change', render);
-    b.addEventListener('change', render);
-    render();
+    a.addEventListener('change', render); b.addEventListener('change', render); render();
+    })();
   </script>
 </Base>

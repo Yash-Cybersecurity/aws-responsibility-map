@@ -1,0 +1,22 @@
+service: bedrock
+control_domain: incident-response
+overall: shared
+responsibility:
+  aws: "Provides abuse detection and service-side monitoring."
+  customer: "Monitor your use and respond to incidents involving prompts or outputs."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html
+    source_type: aws-doc
+    quote: "For more information on how your data is processed for abuse detection, see Amazon Bedrock abuse detection."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:bedrock-ir"
+frameworks:
+  nist_800_53: [IR-4, IR-6]
+  iso_27001_2022: [A.5.24, A.5.26]
+  soc2: [CC7.4, CC7.5]
+review:
+  status: draft
+  reviewed_on: "2026-11-11"
+  confidence: low
+  rationale: "Draft: abuse detection is sourced; the customer response split needs review."

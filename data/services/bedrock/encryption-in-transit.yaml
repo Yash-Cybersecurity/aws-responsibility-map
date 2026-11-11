@@ -1,0 +1,22 @@
+service: bedrock
+control_domain: encryption-in-transit
+overall: shared
+responsibility:
+  aws: "Requires TLS 1.2 and recommends TLS 1.3."
+  customer: "Use SSL/TLS to communicate with AWS resources."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html
+    source_type: aws-doc
+    quote: "Use SSL/TLS to communicate with AWS resources. We require TLS 1.2 and recommend TLS 1.3."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:bedrock-enc-transit"
+frameworks:
+  nist_800_53: [SC-8]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.7]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "AWS provides TLS endpoints; customer uses them."

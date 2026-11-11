@@ -1,0 +1,22 @@
+service: iam
+control_domain: backup-and-recovery
+overall: aws
+responsibility:
+  aws: "Replicates IAM data across multiple servers for high availability."
+  customer: null
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html
+    source_type: aws-doc
+    quote: "If a request to change some data is successful, the change is committed and safely stored."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:iam-backup"
+frameworks:
+  nist_800_53: [CP-9, CP-10]
+  iso_27001_2022: [A.8.13]
+  soc2: [A1.2]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: medium
+  rationale: "AWS manages IAM data durability."

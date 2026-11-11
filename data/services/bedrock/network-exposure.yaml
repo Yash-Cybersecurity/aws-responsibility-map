@@ -1,0 +1,22 @@
+service: bedrock
+control_domain: network-exposure
+overall: shared
+responsibility:
+  aws: "Supports Amazon VPC and AWS PrivateLink."
+  customer: "Configure VPC endpoints and network access."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/bedrock/latest/userguide/usingVPC.html
+    source_type: aws-doc
+    quote: "You can further protect your data by configuring your VPC so that your data isn't available over the internet."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:bedrock-network"
+frameworks:
+  nist_800_53: [SC-7]
+  iso_27001_2022: [A.8.20, A.8.21]
+  soc2: [CC6.6]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: medium
+  rationale: "AWS provides PrivateLink; customer configures access."

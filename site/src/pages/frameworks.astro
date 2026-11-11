@@ -11,21 +11,23 @@ const frameworks = [
 ];
 ---
 <Base title="Frameworks">
-  <h1 class="text-xl font-bold mb-4">Frameworks</h1>
-  {frameworks.map(fw => (
-    <section class="mb-6">
-      <h2 class="font-semibold mb-2">{fw.name}</h2>
-      <table class="min-w-full border text-sm">
-        <thead><tr><th class="border p-2">Control domain</th><th class="border p-2">{fw.name} controls</th></tr></thead>
-        <tbody>
-          {Object.entries(fw.map).map(([control, ids]) => (
-            <tr>
-              <td class="border p-2"><a href={`${base}controls/${control}`} class="underline">{control}</a></td>
-              <td class="border p-2">{(ids as string[]).join(', ')}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </section>
-  ))}
+  <h1 class="text-3xl font-extrabold">Frameworks</h1>
+  <p class="mt-1 text-sm text-slate-600">Pick a framework and jump to the mapped control domains.</p>
+  <div class="grid lg:grid-cols-3 gap-5 mt-6 items-start">
+    {frameworks.map(fw => (
+      <section class="card overflow-hidden">
+        <h2 class="px-5 py-4 font-bold border-b border-slate-200 bg-slate-50">{fw.name}</h2>
+        <table class="min-w-full text-sm">
+          <tbody>
+            {Object.entries(fw.map).map(([control, ids]) => (
+              <tr class="border-t border-slate-100">
+                <td class="px-4 py-2.5"><a class="link" href={`${base}controls/${control}`}>{control}</a></td>
+                <td class="px-4 py-2.5 text-right text-xs font-semibold text-slate-500">{(ids as string[]).join(', ')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+    ))}
+  </div>
 </Base>

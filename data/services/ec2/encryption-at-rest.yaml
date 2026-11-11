@@ -1,18 +1,25 @@
 service: ec2
 control_domain: encryption-at-rest
-overall: customer
+overall: shared
 responsibility:
-  aws: null
-  customer: "Configuring EBS encryption and managing encryption keys for volumes."
+  aws: "Provides Amazon EBS encryption and KMS integration, and encrypts instance-store volumes by default."
+  customer: "Enable EBS encryption, choose KMS keys, and protect data stored on guest volumes."
   model_provider: null
+default_state:
+  enabled_by_default: null
+  since: null
 sources:
-  - url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html
+  - url: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/data-protection.html
     source_type: aws-doc
-    quote: "Security is a shared responsibility between AWS and you."
-    retrieved: "2026-11-05"
-    content_hash: "sha256:ec2-enc-rest"
+    quote: "Amazon EBS encryption is an encryption solution for your EBS volumes and snapshots. It uses AWS KMS keys."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:ec2-enc-rest-v2"
+frameworks:
+  nist_800_53: [SC-28]
+  iso_27001_2022: [A.8.24]
+  soc2: [CC6.1]
 review:
-  status: draft
-  reviewed_on: "2026-11-05"
-  confidence: low
-  rationale: "Draft: verify against EBS encryption docs."
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "AWS provides the encryption capability; the customer enables it and manages keys, so Shared."

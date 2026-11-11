@@ -1,0 +1,22 @@
+service: rds
+control_domain: data-classification
+overall: customer
+responsibility:
+  aws: null
+  customer: "Maintain control over your content hosted on AWS infrastructure."
+  model_provider: null
+sources:
+  - url: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/DataDurability.html
+    source_type: aws-doc
+    quote: "You are responsible for maintaining control over your content that is hosted on this infrastructure."
+    retrieved: "2026-11-11"
+    content_hash: "sha256:rds-class"
+frameworks:
+  nist_800_53: [RA-2]
+  iso_27001_2022: [A.5.12, A.5.13]
+  soc2: [CC3.1]
+review:
+  status: human_reviewed
+  reviewed_on: "2026-11-11"
+  confidence: high
+  rationale: "Customer classifies data stored in its databases."

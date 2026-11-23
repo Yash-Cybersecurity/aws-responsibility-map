@@ -1,0 +1,70 @@
+{
+  "changed": [
+    {
+      "service": "s3",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/security.html",
+      "path": "snapshots/s3/security.txt"
+    },
+    {
+      "service": "s3",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingEncryption.html",
+      "path": "snapshots/s3/UsingEncryption.txt"
+    },
+    {
+      "service": "s3",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/data-protection.html",
+      "path": "snapshots/s3/data-protection.txt"
+    },
+    {
+      "service": "s3",
+      "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/vulnerability-analysis-and-management.html",
+      "path": "snapshots/s3/vulnerability-analysis-and-management.txt"
+    },
+    {
+      "service": "ec2",
+      "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security.html",
+      "path": "snapshots/ec2/ec2-security.txt"
+    },
+    {
+      "service": "ec2",
+      "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/data-protection.html",
+      "path": "snapshots/ec2/data-protection.txt"
+    },
+    {
+      "service": "iam",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html",
+      "path": "snapshots/iam/introduction.txt"
+    },
+    {
+      "service": "iam",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+      "path": "snapshots/iam/best-practices.txt"
+    },
+    {
+      "service": "rds",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html",
+      "path": "snapshots/rds/UsingWithRDS.txt"
+    },
+    {
+      "service": "rds",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/DataDurability.html",
+      "path": "snapshots/rds/DataDurability.txt"
+    },
+    {
+      "service": "rds",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.LoggingAndMonitoring.html",
+      "path": "snapshots/rds/Overview.LoggingAndMonitoring.txt"
+    },
+    {
+      "service": "bedrock",
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/data-protection.html",
+      "path": "snapshots/bedrock/data-protection.txt"
+    },
+    {
+      "service": "bedrock",
+      "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/usingVPC.html",
+      "path": "snapshots/bedrock/usingVPC.txt"
+    }
+  ],
+  "errors": []
+}

@@ -14,7 +14,7 @@ https://yash-cybersecurity.github.io/aws-responsibility-map/
 
 - Legend (responsibility vocabulary)
 - Matrix (services × controls)
-- By service / By control
+- By service
 - What changed
 - Evaluation results
 

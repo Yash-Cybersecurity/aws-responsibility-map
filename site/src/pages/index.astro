@@ -33,16 +33,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
     </form>
   </section>
 
-  <section class="grid md:grid-cols-3 gap-5 mt-10">
+  <section class="grid md:grid-cols-2 gap-5 mt-10">
     <a href={`${base}services`} class="card p-6 hover:border-slate-300 transition">
       <h2 class="text-xl font-bold">By service</h2>
       <p class="mt-2 text-sm leading-relaxed text-slate-600">Start with S3, EC2, IAM, RDS or Bedrock and see every control with its owner.</p>
       <div class="mt-4 flex gap-2"><StatusBadge value="aws" size="sm" /><StatusBadge value="customer" size="sm" /></div>
-    </a>
-    <a href={`${base}controls`} class="card p-6 hover:border-slate-300 transition">
-      <h2 class="text-xl font-bold">By control</h2>
-      <p class="mt-2 text-sm leading-relaxed text-slate-600">Pick a control, such as encryption at rest, and compare ownership across services.</p>
-      <div class="mt-4 flex gap-2"><StatusBadge value="shared" size="sm" /><StatusBadge value="not_stated" size="sm" /></div>
     </a>
     <a href={`${base}changes`} class="card p-6 hover:border-slate-300 transition">
       <h2 class="text-xl font-bold">What changed</h2>
